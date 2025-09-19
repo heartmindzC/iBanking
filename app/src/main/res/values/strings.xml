@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">iBanking2</string>
+    <string name="text_underline"><u>Click here</u></string>
 </resources>
