@@ -11,56 +11,115 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Good Morning"
+        android:text="iBanking"
+        android:textColor="#051178"
+        android:textSize="50sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.155" />
+        app:layout_constraintVertical_bias="0.131" />
 
     <EditText
         android:id="@+id/et_username"
-        android:layout_width="320dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="32dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
         android:ems="10"
         android:hint="Username"
         android:inputType="text"
+        android:paddingBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.165" />
 
     <EditText
         android:id="@+id/et_password"
-        android:layout_width="320dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="14dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
         android:ems="10"
         android:hint="Password"
-        android:inputType="text"
-        android:password="true"
+        android:inputType="textPassword"
+        android:paddingBottom="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_username" />
+        app:layout_constraintTop_toBottomOf="@+id/et_username"
+        app:layout_constraintVertical_bias="0.008" />
 
-    <CheckBox
+    <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/checkBox_password"
         android:layout_width="139dp"
         android:layout_height="48dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="3dp"
+        android:buttonTint="#051178"
         android:text="Remember Me"
+        android:textColor="#051178"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.121"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password" />
+        app:layout_constraintTop_toTopOf="@+id/et_password"
+        app:layout_constraintVertical_bias="0.102" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:backgroundTint="@android:color/transparent"
+        android:text="Login"
+        android:textColor="#051178"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_password"
+        app:layout_constraintVertical_bias="0.14"
+        app:strokeColor="#051178"
+        app:strokeWidth="2dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#051178"
+        android:padding="20dp"
+        android:text="If you forget password"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btLogin"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
-        android:id="@+id/button_login"
-        android:layout_width="220dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="96dp"
-        android:layout_marginTop="228dp"
-        android:text="Login"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        android:id="@+id/btRecovery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:padding="0dp"
+        android:text="@string/text_underline"
+        app:layout_constraintBottom_toBottomOf="@+id/textView2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.853"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
