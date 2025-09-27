@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- lớp nền trong suốt (giữ padding, height mặc định) -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- lớp gạch dưới đặt ở đáy -->
+    <item android:gravity="bottom">
+        <shape android:shape="rectangle">
+            <size android:height="2dp"/>     <!-- độ dày gạch -->
+            <solid android:color="#051178"/> <!-- màu gạch -->
+        </shape>
+    </item>
+</layer-list>
