@@ -2,6 +2,7 @@ package com.example.ibanking2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,10 +12,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class TransactionActivity extends AppCompatActivity {
+import com.google.android.material.appbar.MaterialToolbar;
 
-    Button btLogin;
-    Button btForgetPass;
+public class TransactionActivity extends AppCompatActivity {
+    MaterialToolbar mtb;
+    Button btPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,22 +29,49 @@ public class TransactionActivity extends AppCompatActivity {
             return insets;
         });
 
-        btLogin = findViewById(R.id.btLogin);
-        btLogin.setOnClickListener(new View.OnClickListener() {
+//        btLogin = findViewById(R.id.btLogin);
+//        btLogin.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        btForgetPass = findViewById(R.id.btRecovery);
+//        btForgetPass.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, RecoveryActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        btPayment = findViewById(R.id.btPayment);
+        btPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                Intent intent = new Intent(TransactionActivity.this, PaymentSuccess.class);
                 startActivity(intent);
+
             }
         });
 
-        btForgetPass = findViewById(R.id.btRecovery);
-        btForgetPass.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, RecoveryActivity.class);
-                startActivity(intent);
-            }
-        });
+        mtb = findViewById(R.id.mtbTuitionPayment);
+        setSupportActionBar(mtb);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

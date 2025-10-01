@@ -3,6 +3,7 @@ package com.example.ibanking2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,39 +11,36 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.google.android.material.button.MaterialButton;
+public class MainActivity extends AppCompatActivity {
 
-public class HomeActivity extends AppCompatActivity {
-
-    MaterialButton btPayTuition;
-
-    MaterialButton mtTransactionHistory;
+    Button btLogin;
+    Button btForgetPass;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        btPayTuition = findViewById(R.id.btPayTuition);
-        btPayTuition.setOnClickListener(new View.OnClickListener() {
+        btLogin = findViewById(R.id.btLogin);
+        btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, TransactionActivity.class);
+                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent);
             }
         });
 
-        mtTransactionHistory = findViewById(R.id.btHistory);
-        mtTransactionHistory.setOnClickListener(new View.OnClickListener() {
+        btForgetPass = findViewById(R.id.btRecovery);
+        btForgetPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(HomeActivity.this, TransactionHistory.class);
+                Intent intent = new Intent(MainActivity.this, RecoveryActivity.class);
                 startActivity(intent);
             }
         });
