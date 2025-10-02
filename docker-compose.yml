@@ -1,0 +1,47 @@
+version: "3.8"
+services:
+  consul:
+    image: consul:1.15
+    ports:
+      - "8500:8500"
+    command: "agent -dev -client=0.0.0.0"
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ibanking
+      MYSQL_USER: ib_user
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+
+  gateway:
+    build: ./gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - user-service
+      - tuition-service
+
+  user-service:
+    build: ./services/user-service
+    environment:
+      - DATABASE_URL=mysql://ib_user:secret@mysql:3306/ibanking
+      - CONSUL_HOST=consul
+    depends_on:
+      - mysql
+      - consul
+  tuition-service:
+    build: ./services/tuition-service
+    environment:
+      - DATABASE_URL=mysql://ib_user:secret@mysql:3306/ibanking
+      - CONSUL_HOST=consul
+    depends_on:
+      - mysql
+      - consul
+
+volumes:
+  mysqldata:
