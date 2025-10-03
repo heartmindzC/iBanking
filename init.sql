@@ -1,0 +1,19 @@
+CREATE DATABASE IF NOT EXISTS ibanking-user;
+USE ibanking-user;
+CREATE TABLE users(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name NVARCHAR(100) NOT NULL,
+  password VARCHAR(20) NOT NULL,
+  birth_date DATE,
+  gender VARCHAR(5),
+  student_id VARCHAR(10) NOT NULL UNIQUE
+);
+CREATE DATABASE IF NOT EXISTS ibanking-tuition;
+USE ibanking-tuition;
+CREATE TABLE tuitions(
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  userId INT NOT NULL,
+  amount DOUBLE NOT NULL,
+  isPaid BOOLEAN DEFAULT FALSE
+
+);
