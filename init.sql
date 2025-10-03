@@ -15,5 +15,4 @@ CREATE TABLE tuitions(
   userId INT NOT NULL,
   amount DOUBLE NOT NULL,
   isPaid BOOLEAN DEFAULT FALSE
-
 );
