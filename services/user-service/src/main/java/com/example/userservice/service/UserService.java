@@ -15,7 +15,7 @@ public class UserService {
     private UserRepository userRepository;
     public User getUserById(Integer id){
         Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()){
+        if(user.isPresent()) {
             return user.get();
         }
         else {

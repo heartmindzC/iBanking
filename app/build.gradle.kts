@@ -42,4 +42,12 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
     implementation("de.hdodenhof:circleimageview:3.1.0")
     implementation("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
+
+
+    // Call Api
+    implementation("com.google.code.gson:gson:2.13.2")
+    // Retrofit core
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    // Converter: Retrofit sử dụng Gson để convert JSON -> POJO
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 }
