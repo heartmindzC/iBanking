@@ -22,7 +22,7 @@
         app:layout_constraintVertical_bias="0.131" />
 
     <EditText
-        android:id="@+id/et_username"
+        android:id="@+id/etUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -40,7 +40,7 @@
         app:layout_constraintVertical_bias="0.165" />
 
     <EditText
-        android:id="@+id/et_password"
+        android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
@@ -55,7 +55,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_username"
+        app:layout_constraintTop_toBottomOf="@+id/etUserName"
         app:layout_constraintVertical_bias="0.008" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
@@ -69,7 +69,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.121"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/et_password"
+        app:layout_constraintTop_toTopOf="@+id/etPassword"
         app:layout_constraintVertical_bias="0.102" />
 
     <com.google.android.material.button.MaterialButton
@@ -86,7 +86,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword"
         app:layout_constraintVertical_bias="0.14"
         app:strokeColor="#051178"
         app:strokeWidth="2dp" />

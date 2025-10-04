@@ -1,57 +1,5 @@
-version: "3.8"
-services:
-  consul:
-    image: consul:1.15
-    ports:
-      - "8500:8500"
-    command: "agent -dev -client=0.0.0.0"
-
-  mysql:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpass
-      MYSQL_DATABASE: ibanking
-      MYSQL_USER: ib_user
-      MYSQL_PASSWORD: secret
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysqldata:/var/lib/mysql
-
-#  gateway:
-#    build: ./gateway
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - user-service
-#      - tuition-service
-
-  user-service:
-    build: ./services/user-service
-    ports:
-      - "8081:8081"
-    environment:
-      - DATABASE_URL=mysql://ib_user:secret@mysql:3306/ibanking
-      - CONSUL_HOST=consul
-    depends_on:
-      - mysql
-      - consul
-  tuition-service:
-    build: ./services/tuition-service
-    ports:
-      - "8082:8082"
-    environment:
-      - DATABASE_URL=mysql://ib_user:secret@mysql:3306/ibanking
-      - CONSUL_HOST=consul
-    depends_on:
-      - mysql
-      - consul
-
-volumes:
-  mysqldata:
-
-
 #version: "3.8"
+#
 #services:
 #  consul:
 #    image: consul:1.15
@@ -70,24 +18,140 @@ volumes:
 #      - "3306:3306"
 #    volumes:
 #      - mysqldata:/var/lib/mysql
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-p$MYSQL_ROOT_PASSWORD" ]
+#      interval: 5s
+#      timeout: 10s
+#      retries: 5
 #
 #  user-service:
 #    build: ./services/user-service
+#    ports:
+#      - "8081:8081"
 #    environment:
 #      - DATABASE_URL=mysql://ib_user:secret@mysql:3306/ibanking
 #      - CONSUL_HOST=consul
 #    depends_on:
-#      - mysql
-#      - consul
+#      mysql:
+#        condition: service_healthy
+#      consul:
+#        condition: service_healthy
 #
 #  tuition-service:
 #    build: ./services/tuition-service
+#    ports:
+#      - "8082:8082"
 #    environment:
 #      - DATABASE_URL=mysql://ib_user:secret@mysql:3306/ibanking
 #      - CONSUL_HOST=consul
 #    depends_on:
-#      - mysql
-#      - consul
+#      mysql:
+#        condition: service_healthy
+#      consul:
+#        condition: service_healthy
 #
 #volumes:
 #  mysqldata:
+#
+
+services:
+  # ===================== CONSUL =====================
+  consul:
+    image: consul:1.15
+    container_name: consul
+    restart: always
+    ports:
+      - "8500:8500"   # giao diện web Consul
+      - "8600:8600/udp"
+    command: agent -dev -client=0.0.0.0
+    networks:
+      - ibanking-net
+
+  # ===================== MYSQL DATABASE =====================
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: ibanking
+      MYSQL_USER: ib_user
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysqldata:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-prootpass"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ibanking-net
+
+  # ===================== USER SERVICE =====================
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    restart: on-failure
+    depends_on:
+      mysql:
+        condition: service_healthy
+      consul:
+        condition: service_started
+    environment:
+      SPRING_APPLICATION_NAME: user-service
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ibanking?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ib_user
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: "true"
+      SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: "true"
+      SERVER_PORT: 8080
+      SERVER_SERVLET_CONTEXT_PATH: /iBanking
+    ports:
+      - "8080:8080"
+    networks:
+      - ibanking-net
+
+  # ===================== TUITION SERVICE =====================
+  tuition-service:
+    build: ./tuition-service
+    container_name: tuition-service
+    restart: on-failure
+    depends_on:
+      mysql:
+        condition: service_healthy
+      consul:
+        condition: service_started
+    environment:
+      SPRING_APPLICATION_NAME: tuition-service
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ibanking?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ib_user
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CLOUD_CONSUL_PORT: 8500
+      SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: "true"
+      SPRING_CLOUD_CONSUL_DISCOVERY_ENABLED: "true"
+      SERVER_PORT: 8081
+      SERVER_SERVLET_CONTEXT_PATH: /iBanking
+    ports:
+      - "8081:8081"
+    networks:
+      - ibanking-net
+
+volumes:
+  mysqldata:
+
+networks:
+  ibanking-net:
+    driver: bridge

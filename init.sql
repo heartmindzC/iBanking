@@ -6,13 +6,34 @@ CREATE TABLE users(
   password VARCHAR(20) NOT NULL,
   birth_date DATE,
   gender VARCHAR(5),
-  student_id VARCHAR(10) NOT NULL UNIQUE
+  student_id VARCHAR(10) NOT NULL UNIQUE,
+  classes VARCHAR(10) NOT NULL
 );
+
+USE ibanking-user
+INSERT INTO users (name, password, birth_date, gender, student_id, classes) VALUES
+('Nguyen Van A', '123456', '2001-03-15', 'M', 'SV001', 'T01'),
+('Tran Thi B', 'abcxyz', '2002-07-22', 'F', 'SV002', 'T01'),
+('Le Van C', 'mypassword', '2000-12-01', 'M', 'SV003', 'T01'),
+('Pham Thi D', 'qwerty', '2003-05-09', 'F', 'SV004', 'T01'),
+('Hoang Van E', 'pass123', '2001-11-30', 'M', 'SV005', 'T01');
+
+
 CREATE DATABASE IF NOT EXISTS ibanking-tuition;
 USE ibanking-tuition;
 CREATE TABLE tuitions(
   id INT AUTO_INCREMENT PRIMARY KEY,
-  userId INT NOT NULL,
+  user_id INT NOT NULL,
   amount DOUBLE NOT NULL,
+  date DATETIME,
   isPaid BOOLEAN DEFAULT FALSE
 );
+
+USE ibanking-tuition;
+INSERT INTO tuitions (user_id, amount, date, is_paid) VALUES
+(1, 1500.00, '2025-10-01 10:00:00', FALSE),
+(2, 1600.50, '2025-10-02 11:30:00', TRUE),
+(3, 1550.75, '2025-10-03 09:45:00', FALSE),
+(4, 1700.00, '2025-10-04 14:20:00', TRUE),
+(5, 1650.25, '2025-10-05 16:10:00', FALSE);
+
