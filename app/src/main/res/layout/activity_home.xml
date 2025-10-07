@@ -170,7 +170,7 @@
             android:layout_marginEnd="10dp"
             android:backgroundTint="@android:color/transparent"
             android:drawableRight="@drawable/outline_arrow_forward_24"
-            android:text="Thong tin sinh vien"
+            android:text="Thông tin sinh vien"
             android:textColor="#051178"
             app:cornerRadius="10dp"
             app:strokeColor="#051178"

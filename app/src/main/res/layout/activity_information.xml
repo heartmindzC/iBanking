@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/mtTransactionHistory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#051178"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        app:title="Student Information"
+        app:titleTextColor="@color/white" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/outline_account_circle_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
+        android:ems="10"
+        android:drawableLeft="@drawable/person_24px"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:text="Nguyễn Thanh Tú"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/etID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
+        android:ems="10"
+        android:drawableLeft="@drawable/id_card_24px"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:text="52300086"
+        app:layout_constraintTop_toBottomOf="@+id/etName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/etGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
+        android:ems="10"
+        android:drawableLeft="@drawable/wc_24px"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:text="Male"
+        app:layout_constraintTop_toBottomOf="@+id/etID"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/etBirth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
+        android:ems="10"
+        android:drawableLeft="@drawable/calendar_month_24px"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:text="21/12/2005"
+        app:layout_constraintTop_toBottomOf="@+id/etGender"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/etPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
+        android:ems="10"
+        android:drawableLeft="@drawable/phone_enabled_24px"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:text="0853836280"
+        app:layout_constraintTop_toBottomOf="@+id/etBirth"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/edt_underline_color"
+        android:ems="10"
+        android:drawableLeft="@drawable/mail_24px"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:text="ntu318485@mail.com"
+        app:layout_constraintTop_toBottomOf="@+id/etPhone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
