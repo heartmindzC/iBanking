@@ -6,6 +6,7 @@ import com.example.tuitionservice.repository.TuitionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,13 +22,11 @@ public class TuitionService {
             throw new RuntimeException("Tuition(ID:"+id+") not found");
         }
     }
-    public Tuition getTuitionByUserId(int userId) {
-        Optional<Tuition> tuition = tuitionRepository.findTuitionByUserId(userId);
-        if(tuition.isPresent()){
-            return tuition.get();
+    public List<Tuition> getTuitionByUserId(int userId) {
+        List<Tuition> tuitions = tuitionRepository.findTuitionByUserId(userId);
+        if(tuitions.isEmpty()){
+            throw new RuntimeException("No tuitions found for User ID:"+userId);
         }
-        else {
-            throw new RuntimeException("Tuition(User ID:"+userId+") not found");
-        }
+        return tuitions;
     }
 }

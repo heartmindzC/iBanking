@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/tuitions")
 public class TuitionController {
@@ -21,7 +23,7 @@ public class TuitionController {
         return ResponseEntity.ok(tuitionService.getTuitionById(id));
     }
     @GetMapping("/getTuitionByUserId/{userId}")
-    public ResponseEntity<Tuition> getTuitionByUserId(@PathVariable int userId){
+    public ResponseEntity<List<Tuition>> getTuitionByUserId(@PathVariable int userId){
         return ResponseEntity.ok(tuitionService.getTuitionByUserId(userId));
     }
 }
