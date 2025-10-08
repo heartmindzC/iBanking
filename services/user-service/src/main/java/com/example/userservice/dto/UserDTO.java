@@ -13,5 +13,5 @@ public class UserDTO {
     private String name;
     private Date birthDate;
     private String gender;
-    private String classes;
+    private String classes; //request api => data => gateway => request servic
 }

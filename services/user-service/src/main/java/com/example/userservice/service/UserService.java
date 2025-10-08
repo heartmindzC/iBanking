@@ -31,5 +31,17 @@ public class UserService {
             throw new RuntimeException("Student(ID:"+studentId+") not found");
         }
     }
+    public User login(String studentId, String password) {
+        Optional<User> user = userRepository.findByStudentId(studentId);
+        if (user.isPresent()) {
+            if (user.get().getPassword().equals(password)) {
+                return user.get();
+            } else {
+                throw new RuntimeException("Sai mật khẩu");
+            }
+        } else {
+            throw new RuntimeException("Không tìm thấy sinh viên ID: " + studentId);
+        }
+    }
 
 }
