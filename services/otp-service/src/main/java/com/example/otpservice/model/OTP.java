@@ -14,7 +14,7 @@ public class OTP {
     private Integer id;
 
     @Column(nullable = false)
-    private Integer userId;
+    private String username;
 
     @Column(nullable = false, length = 10)
     private String code;
