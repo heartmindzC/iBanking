@@ -20,9 +20,9 @@ public class Transaction {
     private int id;
     @Column(nullable = false,  unique = false)
     private int userId;
-    @Column(nullable = false,  unique = true)
+    @Column(nullable = false,  unique = false)
     private int tuitionId;
-    @Column(nullable = false,  unique = true)
+    @Column(nullable = false,  unique = false)
     private String studentId;
     @Column(nullable = false,  unique = false)
     private Date date;

@@ -5,7 +5,6 @@ import com.example.transactionservice.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class TransactionController {
         return ResponseEntity.ok(transactionService.getTransactionByStudentId(studentId));
     }
     @GetMapping("/getTransactionByUserId/{userId}")
-    public ResponseEntity<Transaction> getTransactionByUserId(@PathVariable int userId){
+    public ResponseEntity<List<Transaction>> getTransactionByUserId(@PathVariable int userId){
         return ResponseEntity.ok(transactionService.getTransactionByUserId(userId));
     }
 
