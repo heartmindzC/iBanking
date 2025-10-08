@@ -2,6 +2,7 @@ package com.example.ibanking2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,24 +51,27 @@ public class MainActivity extends AppCompatActivity {
                 String studentId = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
 
-                ApiService api = ApiClient.getClient().create(ApiService.class);
-                Call<User> call = api.getUserByStudentId(studentId);
-                call.enqueue(new Callback<User>() {
-                    @Override
-                    public void onResponse(Call<User> call, Response<User> response) {
-                        if (response.isSuccessful()) {
-                            user = response.body();
-                        }
-                    }
+//                ApiService api = ApiClient.getClient().create(ApiService.class);
+//                Call<User> call = api.getUserByStudentId(studentId);
+//                call.enqueue(new Callback<User>() {
+//                    @Override
+//                    public void onResponse(Call<User> call, Response<User> response) {
+//                        if (response.isSuccessful()) {
+//                            user = response.body();
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<User> call, Throwable t) {
+//                        t.printStackTrace();
+//                    }
+//                });
 
-                    @Override
-                    public void onFailure(Call<User> call, Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
+                Log.d("MainActivity", "User login");
 
                 Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 

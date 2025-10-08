@@ -13,6 +13,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ibanking2.api.ApiClient;
+import com.example.ibanking2.api.ApiConfig;
 import com.example.ibanking2.api.ApiService;
 import com.example.ibanking2.models.User;
 import com.google.android.material.button.MaterialButton;
@@ -41,7 +42,7 @@ public class HomeActivity extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvStudentId = findViewById(R.id.tvStudentId);
 
-        ApiService api = ApiClient.getClient().create(ApiService.class);
+        ApiService api = ApiClient.getClient(ApiConfig.getUserServiceBaseURL()).create(ApiService.class);
         Call<User> call = api.getUserByStudentId("SV001");
         call.enqueue(new Callback<User>() {
             @Override
@@ -78,5 +79,10 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // call api get user to
+    private User getUser() {
+        return null;
     }
 }
