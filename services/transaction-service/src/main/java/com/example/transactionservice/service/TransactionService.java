@@ -33,14 +33,12 @@ public class TransactionService {
             throw new RuntimeException("Tuition (ID:"+tuitionId+") not found");
         }
     }
-    public Transaction getTransactionByUserId(int userId) {
-        Optional<Transaction> transaction = transactionRepository.findByUserId(userId);
-        if(transaction.isPresent()){
-            return transaction.get();
+    public List<Transaction> getTransactionByUserId(int userId) {
+        List<Transaction> transactions = transactionRepository.findAllByUserId(userId);
+        if(transactions.isEmpty()){
+            throw new RuntimeException("No transactions found for User (ID:"+userId+")");
         }
-        else {
-            throw new RuntimeException("User (ID:"+userId+") not found");
-        }
+        return transactions;
     }
     public Transaction getTransactionByStudentId(String studentId) {
         Optional<Transaction> transaction = transactionRepository.findByStudentId(studentId);
