@@ -10,5 +10,5 @@ import java.util.Optional;
 
 @Repository
 public interface OtpRepository extends JpaRepository<OTP,Integer> {
-    Optional<OTP> findTopByUserIdAndPurposeOrderByCreatedAtDesc(Integer userId, String purpose);
+    Optional<OTP> findTopByUserIdAndPurposeOrderByCreatedAtDesc(String username, String purpose);
 }

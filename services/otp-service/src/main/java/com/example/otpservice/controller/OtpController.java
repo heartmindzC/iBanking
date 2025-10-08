@@ -19,20 +19,20 @@ public class OtpController {
 
     @PostMapping("/generate")
     public Map<String, String> generateOtp(@RequestBody Map<String, Object> request) {
-        Integer userId = (Integer) request.get("userId");
+        String username = (String) request.get("username");
         String purpose = (String) request.get("purpose");
 
-        String code = otpService.generateOtp(userId, purpose);
+        String code = otpService.generateOtp(username, purpose);
         return Map.of("message", "OTP generated successfully", "otp", code);
     }
 
     @PostMapping("/verify")
     public Map<String, String> verifyOtp(@RequestBody Map<String, Object> request) {
-        Integer userId = (Integer) request.get("userId");
+        String username = (String) request.get("username");
         String purpose = (String) request.get("purpose");
         String code = (String) request.get("code");
 
-        boolean result = otpService.verifyOtp(userId, purpose, code);
+        boolean result = otpService.verifyOtp(username, purpose, code);
 
         return Map.of("verified", String.valueOf(result));
     }
