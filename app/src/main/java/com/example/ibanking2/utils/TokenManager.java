@@ -22,7 +22,7 @@ public class TokenManager {
 
     public static synchronized TokenManager getInstance(Context context) {
         if (instance == null) {
-            return new TokenManager(context.getApplicationContext());
+            instance = new TokenManager(context.getApplicationContext());
         }
         return instance;
     }
