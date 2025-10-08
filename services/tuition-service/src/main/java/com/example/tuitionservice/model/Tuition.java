@@ -18,13 +18,18 @@ public class Tuition {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name="user_id", nullable = false, unique = false)
     private int userId;
+
     @Column(nullable = false, unique = false)
     private double amount;
+
     @Column(nullable = false, unique = false)
     private Date date;
+
     @Column(name ="is_paid",nullable = false, unique = false)
+    @JsonProperty("paid")
     private boolean isPaid;
 
 }

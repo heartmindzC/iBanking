@@ -1,13 +1,17 @@
 package com.example.ibanking2.api;
 
+import com.example.ibanking2.models.LoginRequest;
 import com.example.ibanking2.models.Transaction;
 import com.example.ibanking2.models.Tuition;
 import com.example.ibanking2.models.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -18,6 +22,9 @@ public interface ApiService {
 
     @GET("users/userById/{id}")
     Call<User> getUserById(@Path("id") int id);
+
+    @POST("users/login?")
+    Call<User> login (@Body HashMap<String, String> request);
 
 
 

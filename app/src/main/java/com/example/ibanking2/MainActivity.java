@@ -15,8 +15,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.ibanking2.api.ApiClient;
+import com.example.ibanking2.api.ApiConfig;
 import com.example.ibanking2.api.ApiService;
+import com.example.ibanking2.models.LoginManager;
 import com.example.ibanking2.models.User;
+
+import java.util.HashMap;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,27 +55,41 @@ public class MainActivity extends AppCompatActivity {
                 String studentId = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
 
-//                ApiService api = ApiClient.getClient().create(ApiService.class);
-//                Call<User> call = api.getUserByStudentId(studentId);
-//                call.enqueue(new Callback<User>() {
-//                    @Override
-//                    public void onResponse(Call<User> call, Response<User> response) {
-//                        if (response.isSuccessful()) {
-//                            user = response.body();
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<User> call, Throwable t) {
-//                        t.printStackTrace();
-//                    }
-//                });
+                HashMap<String, String> loginRequest = new HashMap<String, String>();
+                loginRequest.put("studentId", studentId);
+                loginRequest.put("password", password);
 
-                Log.d("MainActivity", "User login");
+                ApiService api = ApiClient.getClient(ApiConfig.getUserServiceBaseURL()).create(ApiService.class);
+                Call<User> call = api.login(loginRequest);
+                call.enqueue(new Callback<User>() {
+                    @Override
+                    public void onResponse(Call<User> call, Response<User> response) {
+                        if (response.isSuccessful()) {
+                            user = response.body();
+                            Log.d("Call api login", "Get user success");
 
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
-                finish();
+                            if (user != null) {
+                                LoginManager.getInstance().setUser(user);
+
+                                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            else {
+                                Log.d("Login", "User not exist");
+                            }
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "Student id or password is wrong", Toast.LENGTH_SHORT).show();
+                            Log.d("Login", "Not success");
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<User> call, Throwable t) {
+                        t.printStackTrace();
+                    }
+                });
             }
         });
 

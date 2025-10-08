@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +22,7 @@ import com.example.ibanking2.adapters.TuitionAdapter;
 import com.example.ibanking2.api.ApiClient;
 import com.example.ibanking2.api.ApiConfig;
 import com.example.ibanking2.api.ApiService;
+import com.example.ibanking2.models.LoginManager;
 import com.example.ibanking2.models.Tuition;
 import com.example.ibanking2.models.User;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -37,6 +39,8 @@ public class TransactionActivity extends AppCompatActivity {
     EditText etFindByStudentId;
     RecyclerView rvTuitions;
     User user;
+    TextView tvStudentIdName;
+    User userLogin = LoginManager.getInstance().getUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +70,8 @@ public class TransactionActivity extends AppCompatActivity {
 //                startActivity(intent);
 //            }
 //        });
-
+        tvStudentIdName = findViewById(R.id.tvStudentIdName);
+        tvStudentIdName.setText(userLogin.getStudentId() + " " + userLogin.getName());
 
         btGetTuition = findViewById(R.id.btGetTuition);
         btGetTuition.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +118,6 @@ public class TransactionActivity extends AppCompatActivity {
                                 rvTuitions.setAdapter(adapter);
                             }
                             else {
-                                Log.d("Call API tuitions: ", "Error");
                                 Log.d("Call API tuitions: ", "Error");
                             }
                         }
