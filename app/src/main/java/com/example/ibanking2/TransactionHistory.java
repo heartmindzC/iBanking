@@ -3,6 +3,7 @@ package com.example.ibanking2;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +18,9 @@ import com.example.ibanking2.adapters.TransactionAdapter;
 import com.example.ibanking2.api.ApiClient;
 import com.example.ibanking2.api.ApiConfig;
 import com.example.ibanking2.api.ApiService;
+import com.example.ibanking2.models.LoginManager;
 import com.example.ibanking2.models.Transaction;
+import com.example.ibanking2.models.User;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.List;
@@ -30,6 +33,9 @@ public class TransactionHistory extends AppCompatActivity {
 
     MaterialToolbar mtTransactionHistory;
     RecyclerView rvTransactions;
+    TextView tvStudentId, tvName;
+
+    private static final User userLogin = LoginManager.getInstance().getUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +56,47 @@ public class TransactionHistory extends AppCompatActivity {
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
+        tvStudentId = findViewById(R.id.tvStudentId);
+        tvStudentId.setText(userLogin.getStudentId());
+        tvName = findViewById(R.id.tvName);
+        tvName.setText(userLogin.getName());
+
         rvTransactions = findViewById(R.id.rvTransactions);
+
+        ApiService api = ApiClient.getClient(ApiConfig.getTransactionBaseURL()).create(ApiService.class);
+        Call<List<Transaction>> call = api.getTransactionByUserId(1);
+        call.enqueue(new Callback<List<Transaction>>() {
+            @Override
+            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
+                if (response.isSuccessful()){
+                    List<Transaction> transactions = response.body();
+                    TransactionAdapter adapter = new TransactionAdapter(transactions);
+
+                    rvTransactions.setLayoutManager(new LinearLayoutManager(TransactionHistory.this));
+                    rvTransactions.addItemDecoration(new DividerItemDecoration(TransactionHistory.this, DividerItemDecoration.VERTICAL));
+                    rvTransactions.setAdapter(adapter);
+                }
+                else {
+                    Log.d("Call Transaction API: ", "ERROR");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Transaction>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}
 
 
 //        Call<Transaction> call = api.getTransactionById(1);
@@ -84,41 +130,3 @@ public class TransactionHistory extends AppCompatActivity {
 //                t.printStackTrace();
 //            }
 //        });
-
-        ApiService api = ApiClient.getClient(ApiConfig.getTransactionBaseURL()).create(ApiService.class);
-        Call<List<Transaction>> call = api.getTransactionByUserId(1);
-        call.enqueue(new Callback<List<Transaction>>() {
-            @Override
-            public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
-                if (response.isSuccessful()){
-                    List<Transaction> transactions = response.body();
-                    TransactionAdapter adapter = new TransactionAdapter(transactions);
-
-                    rvTransactions.setLayoutManager(new LinearLayoutManager(TransactionHistory.this));
-                    rvTransactions.addItemDecoration(new DividerItemDecoration(TransactionHistory.this, DividerItemDecoration.VERTICAL));
-                    rvTransactions.setAdapter(adapter);
-                }
-                else {
-                    Log.d("Call Transaction API: ", "ERROR");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Transaction>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-
-
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            finish();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-}
