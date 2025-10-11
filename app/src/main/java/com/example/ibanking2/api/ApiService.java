@@ -43,4 +43,7 @@ public interface ApiService {
 
     @GET("transactions/getTransactionById/{id}")
     Call<Transaction> getTransactionById(@Path("id") int id);
+
+    @POST("transactions/create?")
+    Call<Transaction> createTransaction(@Body Transaction transaction);
 }

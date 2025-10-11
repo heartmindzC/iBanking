@@ -1,5 +1,9 @@
 package com.example.ibanking2.models;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.time.LocalDateTime;
@@ -7,7 +11,7 @@ import java.util.Date;
 
 public class Transaction {
     @SerializedName("id")
-    private int transactionId;
+    private Integer transactionId;
 
     @SerializedName("userId")
     private int userId;
@@ -47,6 +51,19 @@ public class Transaction {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Transaction(int userId, int tuitionId, String studentId, double amount, String type, String status) {
+        this.userId = userId;
+        this.tuitionId = tuitionId;
+        this.studentId = studentId;
+        this.date = new Date();
+        this.amount = amount;
+        this.type = type;
+        this.status = status;
+        this.createdAt = LocalDateTime.now().toString();
+        this.updatedAt = LocalDateTime.now().toString();
     }
 
     public int getTransactionId() {

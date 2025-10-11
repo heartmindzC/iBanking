@@ -53,23 +53,6 @@ public class TransactionActivity extends AppCompatActivity {
             return insets;
         });
 
-//        btLogin = findViewById(R.id.btLogin);
-//        btLogin.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        btForgetPass = findViewById(R.id.btRecovery);
-//        btForgetPass.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, RecoveryActivity.class);
-//                startActivity(intent);
-//            }
-//        });
         tvStudentIdName = findViewById(R.id.tvStudentIdName);
         tvStudentIdName.setText(userLogin.getStudentId() + " " + userLogin.getName());
 

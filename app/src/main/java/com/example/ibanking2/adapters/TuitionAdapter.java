@@ -8,10 +8,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ibanking2.R;
+import com.example.ibanking2.api.ApiClient;
+import com.example.ibanking2.api.ApiConfig;
+import com.example.ibanking2.api.ApiService;
+import com.example.ibanking2.models.Transaction;
 import com.example.ibanking2.models.Tuition;
 import com.example.ibanking2.models.User;
 
 import java.util.List;
+
+import retrofit2.Call;
 
 public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
     private List<Tuition> tuitions;
@@ -41,6 +47,21 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
         holder.tvClass.setText(user.getClasses());
         holder.tvAmount.setText("" + tuition.getAmount());
         holder.tvStatus.setText(String.valueOf(tuition.isPaid()));
+
+        //
+        holder.btPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // call api thanh toan hoc phi
+
+                // Tao mot new transaction
+//                Transaction newTransaction = new Transaction()
+
+                // call api tao giao dich
+//                ApiService api = ApiClient.getClient(ApiConfig.getTransactionBaseURL()).create(ApiService.class);
+//                Call<Transaction> callTransaction = api.createTransaction(newTransaction);
+            }
+        });
     }
 
     @Override
