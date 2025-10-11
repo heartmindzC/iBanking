@@ -40,6 +40,10 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
+        // Call api get payments account
+        // code here
+        //
+
         tvName = findViewById(R.id.tvName);
         tvStudentId = findViewById(R.id.tvStudentId);
 
