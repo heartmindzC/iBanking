@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -51,11 +52,35 @@ public class TransactionService {
     }
 
     // CRUD
-    public Transaction createTransaction(Transaction transaction) {
+//    public Transaction createTransaction(Transaction transaction) {
+//        transaction.setCreatedAt(LocalDateTime.now());
+//        transaction.setUpdatedAt(LocalDateTime.now());
+//        return transactionRepository.save(transaction);
+//    }
+
+    public Transaction createTransaction(
+            int userId,
+            int tuitionId,
+            String studentId,
+            Date date,
+            double amount,
+            String type,
+            String status
+    ) {
+        Transaction transaction = new Transaction();
+        transaction.setUserId(userId);
+        transaction.setTuitionId(tuitionId);
+        transaction.setStudentId(studentId);
+        transaction.setDate(date);
+        transaction.setAmount(amount);
+        transaction.setType(type);
+        transaction.setStatus(status);
         transaction.setCreatedAt(LocalDateTime.now());
         transaction.setUpdatedAt(LocalDateTime.now());
+
         return transactionRepository.save(transaction);
     }
+
     public List<Transaction> getAllTransactions() {
         return transactionRepository.findAll();
     }
