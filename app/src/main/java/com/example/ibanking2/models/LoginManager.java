@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class LoginManager {
     private static User user;
+    private static PaymentAccount paymentAccount;
     private static LoginManager instance;
 
     private LoginManager() {

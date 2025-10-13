@@ -32,8 +32,8 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionHolder> 
     public void onBindViewHolder(@NonNull TransactionHolder holder, int position) {
         Transaction transaction = transactions.get(position);
 
-        holder.tvTransactionContent.setText("...");
-        holder.tvAmount.setText(String.valueOf(transaction.getAmount()));
+        holder.tvTransactionContent.setText(transaction.getUserId() + " thanh toan hoc phi cho " + transaction.getStudentId());
+        holder.tvAmount.setText(transaction.getAmount() + " VND");
 
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         String formattedDate = sdf.format(transaction.getDate());

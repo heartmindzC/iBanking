@@ -8,6 +8,7 @@ public class ApiConfig {
     private static final String TUITION_SERVICE_PORT = "8081";
     private static final String TRANSACTION_SERVICE_PORT = "8082";
     private static final String PAYMENT_SERVICE_PORT = "8083";
+    private static final String OTP_SERVICE_PORT = "8084";
 
     public static String getUserServiceBaseURL(){
         return BASE_URL + USER_SERVICE_PORT + "/iBanking/";
@@ -19,5 +20,13 @@ public class ApiConfig {
 
     public static String getTuitionBaseURL() {
         return BASE_URL + TUITION_SERVICE_PORT + "/iBanking/";
+    }
+
+    public static String getPaymentBaseURL() {
+        return BASE_URL + PAYMENT_SERVICE_PORT + "/iBanking/";
+    }
+
+    public static String getOTPBaseURL() {
+        return BASE_URL + OTP_SERVICE_PORT + "/iBanking/";
     }
 }
