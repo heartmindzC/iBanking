@@ -1,6 +1,7 @@
 package com.example.transactionservice.controller;
 
 import com.example.transactionservice.model.Transaction;
+import com.example.transactionservice.model.TransactionRequest;
 import com.example.transactionservice.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,8 +36,16 @@ public class TransactionController {
     // === CRUD ===
 
     @PostMapping("/create")
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction) {
-        Transaction created = transactionService.createTransaction(transaction);
+    public ResponseEntity<Transaction> createTransaction(@RequestBody TransactionRequest request) {
+        Transaction created = transactionService.createTransaction(
+                request.getUserId(),
+                request.getTuitionId(),
+                request.getStudentId(),
+                request.getDate(),
+                request.getAmount(),
+                request.getType(),
+                request.getStatus()
+        );
         return new ResponseEntity<>(created, HttpStatus.CREATED);
     }
 
