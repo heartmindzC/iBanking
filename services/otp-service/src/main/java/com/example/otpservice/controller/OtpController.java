@@ -21,8 +21,8 @@ public class OtpController {
     public Map<String, String> generateOtp(@RequestBody Map<String, Object> request) {
         Integer userId = (Integer) request.get("userId");
         String purpose = (String) request.get("purpose");
-
-        String code = otpService.generateOtp(userId, purpose);
+        String email = (String) request.get("email");
+        String code = otpService.generateOtp(userId, purpose, email);
         return Map.of("message", "OTP generated successfully", "otp", code);
     }
 

@@ -3,6 +3,7 @@ package com.example.otpservice.service;
 import com.example.otpservice.model.OTP;
 import com.example.otpservice.repository.OtpRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,10 +15,12 @@ public class OtpService {
 
     @Autowired
     private OtpRepository otpRepository;
+    @Autowired
+    private EmailService emailService;
+    
+    private final int EXPIRATION_MINUTES = 2;
 
-    private final int EXPIRATION_MINUTES = 5;
-
-    public String generateOtp(Integer userId, String purpose) {
+    public String generateOtp(Integer userId, String purpose, String email) {
         String code = String.format("%06d", new Random().nextInt(999999)); // 6 số ngẫu nhiên
 
         OTP otp = new OTP();
@@ -27,6 +30,11 @@ public class OtpService {
         otp.setExpiresAt(LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES));
 
         otpRepository.save(otp);
+
+        if(email != null){
+            emailService.sendOtpEmail(email, code);
+        }
+        
         return code;
     }
 
