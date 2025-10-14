@@ -44,9 +44,13 @@ public class PaymentController {
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-
+    @GetMapping("getBalanceByUserId/{userId}")
+    public ResponseEntity<Double> getBalanceByUserId(@PathVariable int userId) {
+        Double balance = paymentService.getBalanceByUserId(userId);
+        return ResponseEntity.ok(balance);
+    }
     // 📋 3️⃣ Lấy danh sách tất cả payment (cho admin hoặc kế toán)
-    @GetMapping
+    @GetMapping("/getAllPayments")
     public ResponseEntity<List<Payment>> getAllPayments() {
         return ResponseEntity.ok(paymentService.getAllPayments());
     }
@@ -67,12 +71,6 @@ public class PaymentController {
     //     double balance = paymentService.getBalanceByUserId(userId);
     //     return ResponseEntity.ok(balance);
     // }
-    @GetMapping("/getPaymentAccountByUserId/{userId}")
-    public ResponseEntity<PaymentAccount> getPaymentAccountByUserId(@PathVariable int userId) {
-        return paymentService.findPaymentAccountByUserId(userId)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
-    }
     // ❌ 7️⃣ Xóa payment (thường chỉ dùng trong admin panel)
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePayment(@PathVariable int id) {

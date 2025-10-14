@@ -52,12 +52,13 @@ public class PaymentService {
     public Optional<Payment> getPaymentById(int id) {
         return paymentRepo.findById(id);
     }
-
+    public Double getBalanceByUserId(int userId) {
+        return paymentRepo.findBalanceByUserId(userId);
+    }
     public List<Payment> getAllPayments() {
         return paymentRepo.findAll();
     }
     @Transactional
-
     public Payment updatePaymentStatus(int id, PaymentStatus status) {
         Payment payment = paymentRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Payment not found"));
@@ -66,7 +67,6 @@ public class PaymentService {
         return paymentRepo.save(payment);
     }
     @Transactional
-
     public void deletePayment(int id) {
         paymentRepo.deleteById(id);
     }

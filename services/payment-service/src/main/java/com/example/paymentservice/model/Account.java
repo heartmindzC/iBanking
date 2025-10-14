@@ -17,6 +17,5 @@ public class Account {
     private int id;
     @Column(name = "user_id")
     private int userId;
-
     private double balance;
 }
