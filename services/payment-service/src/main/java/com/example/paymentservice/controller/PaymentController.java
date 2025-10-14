@@ -4,6 +4,7 @@ package com.example.paymentservice.controller;
 import com.example.paymentservice.dto.PaymentRequest;
 import com.example.paymentservice.dto.PaymentResponse;
 import com.example.paymentservice.model.Payment;
+import com.example.paymentservice.model.PaymentAccount;
 import com.example.paymentservice.model.PaymentStatus;
 import com.example.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,12 @@ public class PaymentController {
         double balance = paymentService.getBalanceByUserId(userId);
         return ResponseEntity.ok(balance);
     }
-
+    @GetMapping("/getPaymentAccountByUserId/{userId}")
+    public ResponseEntity<PaymentAccount> getPaymentAccountByUserId(@PathVariable int userId) {
+        return paymentService.findPaymentAccountByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
     // ❌ 7️⃣ Xóa payment (thường chỉ dùng trong admin panel)
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePayment(@PathVariable int id) {
