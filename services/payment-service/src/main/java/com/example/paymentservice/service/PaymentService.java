@@ -4,10 +4,8 @@ package com.example.paymentservice.service;
 import com.example.paymentservice.dto.PaymentRequest;
 import com.example.paymentservice.dto.PaymentResponse;
 import com.example.paymentservice.model.Payment;
-import com.example.paymentservice.model.PaymentAccount;
 
 import com.example.paymentservice.model.PaymentStatus;
-import com.example.paymentservice.repository.PaymentAccountRepository;
 import com.example.paymentservice.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,6 @@ public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepo;
     
-    @Autowired
-    private PaymentAccountRepository paymentAccountRepo;
     @Transactional
     public PaymentResponse createPayment(PaymentRequest request) {
         Payment payment = new Payment();
@@ -52,9 +48,6 @@ public class PaymentService {
     //     Double balance = paymentAccountRepo.findBalanceByUserId(userId);
     //     return balance != null ? balance : 0.0;
     // }
-    public Optional<PaymentAccount> findPaymentAccountByUserId(int userId) {
-        return paymentAccountRepo.findByUserId(userId);
-    }
 
     public Optional<Payment> getPaymentById(int id) {
         return paymentRepo.findById(id);
