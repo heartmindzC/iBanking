@@ -13,8 +13,8 @@ public class OTP {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
-    private String username;
+    @Column(name ="user_id",nullable = false)
+    private Integer userId;
 
     @Column(nullable = false, length = 10)
     private String code;

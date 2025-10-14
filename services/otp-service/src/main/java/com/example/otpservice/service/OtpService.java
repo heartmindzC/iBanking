@@ -17,11 +17,11 @@ public class OtpService {
 
     private final int EXPIRATION_MINUTES = 5;
 
-    public String generateOtp(String username, String purpose) {
+    public String generateOtp(Integer userId, String purpose) {
         String code = String.format("%06d", new Random().nextInt(999999)); // 6 số ngẫu nhiên
 
         OTP otp = new OTP();
-        otp.setUsername(username);
+        otp.setUserId(userId);
         otp.setCode(code);
         otp.setPurpose(purpose);
         otp.setExpiresAt(LocalDateTime.now().plusMinutes(EXPIRATION_MINUTES));
@@ -30,8 +30,8 @@ public class OtpService {
         return code;
     }
 
-    public boolean verifyOtp(String username, String purpose, String code) {
-        Optional<OTP> otpOpt = otpRepository.findTopByUserIdAndPurposeOrderByCreatedAtDesc(username, purpose);
+    public boolean verifyOtp(Integer userId, String purpose, String code) {
+        Optional<OTP> otpOpt = otpRepository.findTopByUserIdAndPurposeOrderByCreatedAtDesc(userId, purpose);
 
         if (otpOpt.isEmpty()) return false;
 
