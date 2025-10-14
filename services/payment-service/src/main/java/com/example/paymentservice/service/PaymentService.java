@@ -48,10 +48,10 @@ public class PaymentService {
                 saved.getCreatedAt()
         );
     }
-    public double getBalanceByUserId(int userId) {
-        Double balance = paymentAccountRepo.findBalanceByUserId(userId);
-        return balance != null ? balance : 0.0;
-    }
+    // public double getBalanceByUserId(int userId) {
+    //     Double balance = paymentAccountRepo.findBalanceByUserId(userId);
+    //     return balance != null ? balance : 0.0;
+    // }
     public Optional<PaymentAccount> findPaymentAccountByUserId(int userId) {
         return paymentAccountRepo.findByUserId(userId);
     }

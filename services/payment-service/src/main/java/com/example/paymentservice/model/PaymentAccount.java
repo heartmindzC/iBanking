@@ -1,14 +1,18 @@
 package com.example.paymentservice.model;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @Table(name = "payment_accounts")
+@NoArgsConstructor
+@AllArgsConstructor
 public class PaymentAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="account_id")
+    @Column(name ="account_id",nullable = false, unique = true)
     private int accountId;
     @Column(name ="user_id",nullable = false, unique = true)
     private int userId; // tham chiếu từ UserService

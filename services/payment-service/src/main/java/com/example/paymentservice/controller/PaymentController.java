@@ -62,12 +62,12 @@ public class PaymentController {
         return ResponseEntity.ok(updated);
     }
 
-    // 💰 6️⃣ Lấy số dư tài khoản theo User ID
-    @GetMapping("/getBalanceByUserId/{userId}")
-    public ResponseEntity<Double> getBalanceByUserId(@PathVariable int userId) {
-        double balance = paymentService.getBalanceByUserId(userId);
-        return ResponseEntity.ok(balance);
-    }
+    // // 💰 6️⃣ Lấy số dư tài khoản theo User ID
+    // @GetMapping("/getBalanceByUserId/{userId}")
+    // public ResponseEntity<Double> getBalanceByUserId(@PathVariable int userId) {
+    //     double balance = paymentService.getBalanceByUserId(userId);
+    //     return ResponseEntity.ok(balance);
+    // }
     @GetMapping("/getPaymentAccountByUserId/{userId}")
     public ResponseEntity<PaymentAccount> getPaymentAccountByUserId(@PathVariable int userId) {
         return paymentService.findPaymentAccountByUserId(userId)
