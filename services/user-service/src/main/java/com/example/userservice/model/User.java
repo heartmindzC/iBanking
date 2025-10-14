@@ -32,4 +32,7 @@ public class User {
 
     @Column(nullable = false, unique = false) // đánh dấu ràng buộc không được null và có thể trùng lặp
     private String classes;
+
+    @Column(nullable = false, unique = false) // đánh dấu ràng buộc không được null và có thể trùng lặp
+    private String email;
 }
