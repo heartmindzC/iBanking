@@ -13,8 +13,6 @@ public interface PaymentAccountRepository extends JpaRepository<PaymentAccount, 
     
     Optional<PaymentAccount> findByUserId(int userId);
     
-    @Query("SELECT p.balance FROM PaymentAccount p WHERE p.userId = :userId")
-    Double findBalanceByUserId(@Param("userId") int userId);
     
     boolean existsByUserId(int userId);
 }
