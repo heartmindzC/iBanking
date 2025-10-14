@@ -4,6 +4,8 @@ package com.example.paymentservice.service;
 import com.example.paymentservice.dto.PaymentRequest;
 import com.example.paymentservice.dto.PaymentResponse;
 import com.example.paymentservice.model.Payment;
+import com.example.paymentservice.model.PaymentAccount;
+
 import com.example.paymentservice.model.PaymentStatus;
 import com.example.paymentservice.repository.PaymentAccountRepository;
 import com.example.paymentservice.repository.PaymentRepository;
@@ -49,6 +51,9 @@ public class PaymentService {
     public double getBalanceByUserId(int userId) {
         Double balance = paymentAccountRepo.findBalanceByUserId(userId);
         return balance != null ? balance : 0.0;
+    }
+    public Optional<PaymentAccount> findPaymentAccountByUserId(int userId) {
+        return paymentAccountRepo.findByUserId(userId);
     }
 
     public Optional<Payment> getPaymentById(int id) {
