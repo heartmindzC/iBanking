@@ -61,7 +61,14 @@ public class PaymentController {
         return ResponseEntity.ok(updated);
     }
 
-    // ❌ 5️⃣ Xóa payment (thường chỉ dùng trong admin panel)
+    // 💰 6️⃣ Lấy số dư tài khoản theo User ID
+    @GetMapping("/getBalanceByUserId/{userId}")
+    public ResponseEntity<Double> getBalanceByUserId(@PathVariable int userId) {
+        double balance = paymentService.getBalanceByUserId(userId);
+        return ResponseEntity.ok(balance);
+    }
+
+    // ❌ 7️⃣ Xóa payment (thường chỉ dùng trong admin panel)
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deletePayment(@PathVariable int id) {
         paymentService.deletePayment(id);
