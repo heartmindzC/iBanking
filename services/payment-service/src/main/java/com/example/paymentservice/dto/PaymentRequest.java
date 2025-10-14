@@ -13,9 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentRequest {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int paymentId;
     private int userId;
 
     private int tuitionId;

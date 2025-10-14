@@ -4,10 +4,11 @@ package com.example.paymentservice.service;
 import com.example.paymentservice.dto.PaymentRequest;
 import com.example.paymentservice.dto.PaymentResponse;
 import com.example.paymentservice.model.Payment;
+import com.example.paymentservice.model.PaymentAccount;
 import com.example.paymentservice.model.PaymentStatus;
+import com.example.paymentservice.repository.PaymentAccountRepository;
 import com.example.paymentservice.repository.PaymentRepository;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ import java.util.Optional;
 public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepo;
+    
+    @Autowired
+    private PaymentAccountRepository paymentAccountRepo;
     @Transactional
     public PaymentResponse createPayment(PaymentRequest request) {
         Payment payment = new Payment();
@@ -42,6 +46,10 @@ public class PaymentService {
                 saved.getStatus().name(),
                 saved.getCreatedAt()
         );
+    }
+    public double getBalanceByUserId(int userId) {
+        Optional<PaymentAccount> account = paymentAccountRepo.findByUserId(userId);
+        return account.map(PaymentAccount::getBalance).orElse(0.0);
     }
 
     public Optional<Payment> getPaymentById(int id) {
