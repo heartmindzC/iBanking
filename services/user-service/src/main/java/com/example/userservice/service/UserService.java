@@ -31,6 +31,9 @@ public class UserService {
             throw new RuntimeException("Student(ID:"+studentId+") not found");
         }
     }
+    public String getEmailByUserId(Integer id){
+        return userRepository.findById(id).get().getEmail();
+    }
     public User login(String studentId, String password) {
         Optional<User> user = userRepository.findByStudentId(studentId);
         if (user.isPresent()) {

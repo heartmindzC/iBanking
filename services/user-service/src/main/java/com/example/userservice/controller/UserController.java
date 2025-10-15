@@ -24,6 +24,10 @@ public class UserController {
     public ResponseEntity<User> getUserByStudentId(@PathVariable  String studentId){
         return ResponseEntity.ok(userService.getUserByStudentId(studentId));
     }
+    @GetMapping("/getEmailByUserId/{userId}")
+    public ResponseEntity<String> getEmailByUserId(@PathVariable  Integer userId){
+        return ResponseEntity.ok(userService.getEmailByUserId(userId));
+    }
 
     @PostMapping("/login")
     public ResponseEntity<User> login(@RequestBody Map<String, String> request) {
