@@ -97,10 +97,4 @@ INSERT INTO payments (user_id, tuition_id, amount, method, status, transaction_i
 (5, 109, 1650.25, 'BANK_TRANSFER', 'PENDING', 9, '2025-10-05 16:10:00', '2025-10-05 16:10:00'),
 (5, 110, 1650.25, 'CASH', 'SUCCESS', 10, '2025-10-07 09:25:00', '2025-10-07 09:25:00');
 
-INSERT INTO accounts (user_id, balance) VALUES
-(1, 2500.00),
-(2, 3200.50),
-(3, 1500.75),
-(4, 4200.00),
-(5, 2850.25);
 

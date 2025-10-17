@@ -23,6 +23,8 @@ import com.example.ibanking2.models.Transaction;
 import com.example.ibanking2.models.User;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -61,18 +63,29 @@ public class TransactionHistory extends AppCompatActivity {
         tvName = findViewById(R.id.tvName);
         tvName.setText(userLogin.getName());
         tvBalance = findViewById(R.id.tvBalance);
-        tvBalance.setText(LoginManager.getInstance().balance + " VND");
+
+        // xu li hien so du theo format
+        DecimalFormat df = new DecimalFormat("#,###.###");
+        tvBalance.setText(df.format(LoginManager.getInstance().balance) + " VND");
 
         rvTransactions = findViewById(R.id.rvTransactions);
 
         ApiService api = ApiClient.getClient(ApiConfig.getTransactionBaseURL()).create(ApiService.class);
-        Call<List<Transaction>> call = api.getTransactionByUserId(1);
+        Call<List<Transaction>> call = api.getTransactionByUserId(LoginManager.getUser().getId());
         call.enqueue(new Callback<List<Transaction>>() {
             @Override
             public void onResponse(Call<List<Transaction>> call, Response<List<Transaction>> response) {
                 if (response.isSuccessful()){
                     List<Transaction> transactions = response.body();
-                    TransactionAdapter adapter = new TransactionAdapter(transactions);
+                    List<Transaction> successTranasction = new ArrayList<Transaction>();
+
+                    for (Transaction t: transactions) {
+                        if (t.getStatus().equals("SUCCESS")) {
+                            successTranasction.add(t);
+                        }
+                    }
+
+                    TransactionAdapter adapter = new TransactionAdapter(successTranasction);
 
                     rvTransactions.setLayoutManager(new LinearLayoutManager(TransactionHistory.this));
                     rvTransactions.addItemDecoration(new DividerItemDecoration(TransactionHistory.this, DividerItemDecoration.VERTICAL));

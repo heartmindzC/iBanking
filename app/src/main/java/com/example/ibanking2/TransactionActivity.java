@@ -28,6 +28,7 @@ import com.example.ibanking2.models.Tuition;
 import com.example.ibanking2.models.User;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -58,7 +59,10 @@ public class TransactionActivity extends AppCompatActivity {
         tvStudentIdName = findViewById(R.id.tvStudentIdName);
         tvStudentIdName.setText(userLogin.getStudentId() + " " + userLogin.getName());
         tvBalance = findViewById(R.id.tvBalance);
-        tvBalance.setText(LoginManager.getInstance().balance + " VND");
+
+        // xu li hien so du theo format
+        DecimalFormat df = new DecimalFormat("#,###.###");
+        tvBalance.setText(df.format(LoginManager.getInstance().balance) + " VND");
 
         btGetTuition = findViewById(R.id.btGetTuition);
         btGetTuition.setOnClickListener(new View.OnClickListener() {
@@ -91,7 +95,7 @@ public class TransactionActivity extends AppCompatActivity {
                                     if (response.isSuccessful()) {
                                         Log.d("Call API tuitions: ", "Success");
                                         List<Tuition> tuitions = response.body();
-                                        TuitionAdapter adapter = new TuitionAdapter(tuitions, user);
+                                        TuitionAdapter adapter = new TuitionAdapter(tuitions, user, TransactionActivity.this);
 
                                         rvTuitions = findViewById(R.id.rvTuitions);
                                         rvTuitions.setLayoutManager(new LinearLayoutManager(TransactionActivity.this));

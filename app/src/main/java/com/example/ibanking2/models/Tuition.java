@@ -36,35 +36,11 @@ public class Tuition {
         this.id = id;
     }
 
-    public String getUserID() {
-        return userID;
-    }
-
-    public void setUserID(String userID) {
-        this.userID = userID;
-    }
-
     public double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public boolean isPaid() {
         return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
     }
 }

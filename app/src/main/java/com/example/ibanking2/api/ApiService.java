@@ -1,6 +1,5 @@
 package com.example.ibanking2.api;
 
-import com.example.ibanking2.models.LoginRequest;
 import com.example.ibanking2.models.Payment;
 import com.example.ibanking2.models.PaymentRequest;
 import com.example.ibanking2.models.Transaction;
@@ -12,20 +11,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
     //Call API for user
     @GET("users/userByStudentId/{studentId}")
     Call<User> getUserByStudentId(@Path("studentId") String studentId);
-
-    @GET("users/userById/{id}")
-    Call<User> getUserById(@Path("id") int id);
 
     @POST("users/login?")
     Call<User> login (@Body HashMap<String, String> request);
@@ -36,20 +35,19 @@ public interface ApiService {
     @GET("tuitions/getTuitionByUserId/{userId}")
     Call<List<Tuition>> getTuitionByUserId(@Path("userId") int userId);
 
-    @GET("tuitions/getTuitionById/{id}")
-    Call<Tuition> getTuitionById(@Path("id") int id);
-
+    @PUT("tuitions/updateTuitionIsPaidById/{id}/{paid}")
+    Call<ResponseBody> updateTuitionIsPaid(@Path("id") int id, @Path("paid") boolean paid);
 
 
     // Call api for transaction
     @GET("transactions/getTransactionByUserId/{userId}")
     Call<List<Transaction>> getTransactionByUserId(@Path("userId") int userId);
 
-    @GET("transactions/getTransactionById/{id}")
-    Call<Transaction> getTransactionById(@Path("id") int id);
-
     @POST("transactions/create?")
     Call<Transaction> createTransaction(@Body TransactionRequest transaction);
+
+    @PUT("transactions/update/{id}")
+    Call<Transaction> updateTransaction(@Path("id") int transactionId, @Body Transaction updTransaction);
 
 
 
@@ -60,6 +58,12 @@ public interface ApiService {
     @POST("payments/createPayment?")
     Call<Payment> createPayment(@Body PaymentRequest paymentRequest);
 
+    @PUT("payments/updateBalance/{userId}/{updBalance}")
+    Call<ResponseBody> updateBalance(@Path("userId") int userId, @Path("updBalance") double udpBalance);
+
+    @PUT("payments/update/{id}/status")
+    Call<Payment> updatePayment (@Path("id")int paymentId, @Query("status") String status);
+
 
 
     // Call api xu li otp
@@ -68,4 +72,10 @@ public interface ApiService {
 
     @POST("otp/verify?")
     Call<Map<String, String>> verifyOTP(@Body Map<String, Object> request);
+
+
+
+    // Call api xu li gui email
+    @POST("notifications/send-transaction?")
+    Call<ResponseBody> sendOTPAfterTransaction(@Body Map<String,String> request);
 }

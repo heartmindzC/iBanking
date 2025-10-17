@@ -1,7 +1,9 @@
 package com.example.ibanking2.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.ibanking2.PaymentSuccess;
 import com.example.ibanking2.R;
 import com.example.ibanking2.api.ApiClient;
 import com.example.ibanking2.api.ApiConfig;
@@ -34,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,11 +45,13 @@ import retrofit2.Response;
 public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
     private List<Tuition> tuitions;
     private User user;
+    private final Activity activity;
 
     // Khi click nut tim se truyen se call api tim user sau do truyen vao adapter
-    public TuitionAdapter(List<Tuition> tuitions, User user) {
+    public TuitionAdapter(List<Tuition> tuitions, User user, Activity activity) {
         this.tuitions = tuitions;
         this.user = user;
+        this.activity = activity;
     }
 
     @NonNull
@@ -105,9 +111,12 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
                                         Log.d("Call api get balance: ", "Success");
                                         Double balance = response.body();
 
+                                        // Neu balance k du thi huy transaction va dung giao dich
                                         if (balance < tuition.getAmount()) {
+                                            updateStatusTransaction(newTransaction, "FAILED");
                                             Log.d("Notification: ", "Not enough balance");
                                             Toast.makeText(view.getContext(), "So du khong du", Toast.LENGTH_SHORT).show();
+                                            showButtonPayment(holder);
                                             return;
                                         }
 
@@ -119,7 +128,9 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
                                             @Override
                                             public void onResponse(Call<Payment> call, Response<Payment> response) {
                                                 if (response.isSuccessful() && response.body() != null) {
+                                                    Log.d("Call api create payment", "Success");
                                                     Payment newPayment = response.body();
+                                                    Log.d("New payment: ", newPayment.getId() + "");
 
                                                     Map<String, Object> otpRequest = new HashMap<String, Object>();
                                                     otpRequest.put("email", LoginManager.getUser().getEmail());
@@ -139,32 +150,44 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
                                                                 Log.d("OTP response: ", otpResponse.get("otp") + "-" + otpResponse.get("message"));
 
                                                                 // Show dialog enterotp
-                                                                showOTPDialog(view.getContext(), holder);
+                                                                showOTPDialog(view.getContext(), holder, tuition, newPayment, newTransaction);
                                                             }
                                                             else {
+                                                                // khong call api tao otp duoc bao failed
+                                                                updateStatusTransaction(newTransaction, "FAILED");
+                                                                updateStatusPayment(newPayment, "FAILED");
                                                                 Log.d("Call api generate and send otp: ", "Error");
                                                             }
                                                         }
 
                                                         @Override
                                                         public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                                                            // khong call api tao otp duoc bao failed
+                                                            updateStatusTransaction(newTransaction, "FAILED");
+                                                            updateStatusPayment(newPayment, "FAILED");
                                                             t.printStackTrace();
                                                         }
                                                     });
 
                                                 }
                                                 else {
+                                                    // create payment khong thanh cong thi huy giao dich
+                                                    updateStatusTransaction(newTransaction, "FAILED");
                                                     Log.d("Call api create payment", "Error");
                                                 }
                                             }
 
                                             @Override
                                             public void onFailure(Call<Payment> call, Throwable t) {
+                                                // create payment khong thanh cong thi huy giao dich
+                                                updateStatusTransaction(newTransaction, "FAILED");
                                                 t.printStackTrace();
                                             }
                                         });
                                     }
                                     else {
+                                        // khong kiem tra duoc so du thi huy giao dich
+                                        updateStatusTransaction(newTransaction, "FAILED");
                                         Log.d("Call api get balance: ", "Error");
                                     }
                                 }
@@ -202,7 +225,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
                 new Date(),
                 amount,
                 "PAYMENT",
-                "false"
+                "PENDING"
         );
     }
 
@@ -210,7 +233,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
         return new PaymentRequest(LoginManager.getUser().getId(), tuitionId, "CK", amount, transactionId);
     }
 
-    private void showOTPDialog(Context context, TuitionHolder holder) {
+    private void showOTPDialog(Context context, TuitionHolder holder, Tuition tuition, Payment payment, Transaction transaction) {
         final EditText inputOtp = new EditText(context);
         inputOtp.setHint("Nhập mã OTP");
         inputOtp.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -242,44 +265,207 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
 
                                     if (flag) {
                                         Toast.makeText(context, "Nhap ma OTP dung", Toast.LENGTH_SHORT).show();
+
+                                        // xu li sau khi nhap otp dung
+                                        updateBalance(tuition);
+                                        updateStatusPayment(payment, "SUCCESS");
+                                        updateStatusTransaction(transaction, "SUCCESS");
+                                        updateStatusTuition(tuition, true);
+                                        sendEmailVerifySuccess(transaction);
+
+                                        Intent intent = new Intent(context, PaymentSuccess.class);
+                                        context.startActivity(intent);
+                                        activity.finish();
                                     }
                                     else {
+                                        updateStatusTransaction(transaction, "FAILED");
+                                        updateStatusPayment(payment, "CANCEL");
                                         Toast.makeText(context, "Nhap ma OTP sai", Toast.LENGTH_SHORT).show();
+                                        showButtonPayment(holder);
                                     }
                                 }
                                 else {
+                                    updateStatusTransaction(transaction, "FAILED");
+                                    updateStatusPayment(payment, "FAILED");
+
                                     Log.d("Call api verify OTP", "Error");
+                                    showButtonPayment(holder);
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Map<String, String>> call, Throwable t) {
+                                // khong xac thu otp duoc
+                                updateStatusTransaction(transaction, "FAILED");
+                                updateStatusPayment(payment, "FAILED");
+
                                 t.printStackTrace();
+                                showButtonPayment(holder);
                             }
                         });
 
                     } else {
                         Toast.makeText(context, "Mã OTP phải đủ 6 chữ số", Toast.LENGTH_SHORT).show();
+                        showButtonPayment(holder);
                     }
                 })
                 .setNegativeButton("Hủy", (dialogInterface, i) -> {
-                    holder.btPayment.setEnabled(true);
-                    holder.btPayment.setText("Payment");
-                    holder.progressLoading.setVisibility(View.GONE);
+                    updateStatusTransaction(transaction, "FAILED");
+                    updateStatusPayment(payment, "CANCEL");
+                    showButtonPayment(holder);
                 })
                 .create();
 
         dialog.show();
     }
 
-    private void processTransaction() {
-        // xu lí tru tien
+    private void showButtonPayment(TuitionHolder holder) {
+        holder.btPayment.setEnabled(true);
+        holder.btPayment.setText("Payment");
+        holder.progressLoading.setVisibility(View.GONE);
+    }
 
-        // xu lí status transaction
+    private void updateBalance(Tuition tuition) {
+        // Call lai api check so du va tru tien
+        ApiService apiUpdateBalance = ApiClient.getClient(ApiConfig.getPaymentBaseURL()).create(ApiService.class);
+        Call<Double> callApiGetBalance = apiUpdateBalance.getBalanceByUserId(LoginManager.getUser().getId());
+        callApiGetBalance.enqueue(new Callback<Double>() {
+            @Override
+            public void onResponse(Call<Double> call, Response<Double> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("Call api get balance: ", "Success");
+                    Double balance = response.body();
+                    if (balance > tuition.getAmount()) {
+                        Double newBalance = balance - tuition.getAmount();
 
-        // xu lí status payment
+                        // Call api update new balance
+                        Call<ResponseBody> callApiUpdateBalance = apiUpdateBalance.updateBalance(LoginManager.getUser().getId(), newBalance);
+                        callApiUpdateBalance.enqueue(new Callback<ResponseBody>() {
+                            @Override
+                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    Log.d("Call Api update balance: ", "Success");
+                                }
+                                else {
+                                    Log.d("Call Api update balance: ", "Error");
+                                }
+                            }
 
-        // xu li gui mail noti success
+                            @Override
+                            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                t.printStackTrace();
+                            }
+                        });
+                    }
+                }
+                else {
+                    Log.d("Call api get balance: ", "Error");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Double> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    // xu li update transaction
+    private void updateStatusTransaction(Transaction transaction, String status){
+        transaction.setStatus(status);
+
+        ApiService apiUpdateTransaction = ApiClient.getClient(ApiConfig.getTransactionBaseURL()).create(ApiService.class);
+        Call<Transaction> callApiUpdateTransaction = apiUpdateTransaction.updateTransaction(transaction.getTransactionId(), transaction);
+        callApiUpdateTransaction.enqueue(new Callback<Transaction>() {
+            @Override
+            public void onResponse(Call<Transaction> call, Response<Transaction> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("Call api update transaction: ", "Success");
+                    Log.d("Call api update transaction: ", response.body().toString());
+                }
+                else {
+                    Log.d("Call api update transaction: ", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Transaction> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    // xu li update payment
+    private void updateStatusPayment(Payment payment, String status) {
+        payment.setStatus(status);
+
+        ApiService apiUpdatePayment = ApiClient.getClient(ApiConfig.getPaymentBaseURL()).create(ApiService.class);
+        Log.d("Payment: ", payment.getId() + "");
+        Call<Payment> callApiUpdatePayment = apiUpdatePayment.updatePayment(payment.getId(), payment.getStatus());
+        callApiUpdatePayment.enqueue(new Callback<Payment>() {
+            @Override
+            public void onResponse(Call<Payment> call, Response<Payment> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("Call api update Payment: ", "Success");
+//                    Log.d("Call api update Payment: ", response.body().toString());
+                }
+                else {
+                    Log.d("Call api update Payment: ", "Error code: " + response.code() +
+                            " | body: " + response.errorBody());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Payment> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    // xu li gui email khi giao dich thanh cong
+    private void sendEmailVerifySuccess(Transaction transaction) {
+        Map<String, String> emailRequest = new HashMap<String, String>();
+        emailRequest.put("toEmail", LoginManager.getUser().getEmail());
+        emailRequest.put("transactionId", transaction.getTransactionId() + "");
+        ApiService apiSendEmailAfterTransaction = ApiClient.getClient(ApiConfig.getEmailServicePort()).create(ApiService.class);
+        Call<ResponseBody> callApiSendEmail = apiSendEmailAfterTransaction.sendOTPAfterTransaction(emailRequest);
+        callApiSendEmail.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("Call api send email after transaction: ", "Success");
+                }
+                else {
+                    Log.d("Call api send email after transaction: ", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    // xu li update is_paid trong tuition
+    private void updateStatusTuition(Tuition tuition, boolean status){
+        ApiService apiUpdateTuitionIsPaid = ApiClient.getClient(ApiConfig.getTuitionBaseURL()).create(ApiService.class);
+        Call<ResponseBody> callApiUpdateTuitionIsPaid = apiUpdateTuitionIsPaid.updateTuitionIsPaid(tuition.getId(), status);
+        callApiUpdateTuitionIsPaid.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("Call Api update tuition is_paid: ", "Success");
+                }
+                else {
+                    Log.d("Call Api update tuition is_paid: ", "Error");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
     }
 }

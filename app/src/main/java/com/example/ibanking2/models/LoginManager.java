@@ -42,7 +42,7 @@ public class LoginManager {
         balance = 0.0;
     }
 
-    private static void setBalance() {
+    public static void setBalance() {
         long startTime = System.currentTimeMillis();
         long duration = 500;
 

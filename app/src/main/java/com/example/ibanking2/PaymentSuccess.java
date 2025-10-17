@@ -10,6 +10,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.ibanking2.models.LoginManager;
+
 public class PaymentSuccess extends AppCompatActivity {
 
     @Override
@@ -28,6 +30,7 @@ public class PaymentSuccess extends AppCompatActivity {
             public void run() {
                 Intent intent = new Intent(PaymentSuccess.this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                LoginManager.setBalance();
                 startActivity(intent);
                 finish();
             }

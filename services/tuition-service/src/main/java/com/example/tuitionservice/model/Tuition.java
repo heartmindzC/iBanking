@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 import java.util.Date;
 
 
@@ -29,7 +30,7 @@ public class Tuition {
     private Date date;
 
     @Column(name ="is_paid",nullable = false, unique = false)
-    @JsonProperty("paid")
+//    @JsonProperty("paid")
     private boolean isPaid;
 
 }

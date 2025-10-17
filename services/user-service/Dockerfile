@@ -14,7 +14,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # 2️⃣ Dùng image nhỏ hơn chỉ để chạy
-FROM openjdk:21-jdk-slim
+FROM openjdk:21
 WORKDIR /app
 
 # Copy file jar đã build từ stage trên

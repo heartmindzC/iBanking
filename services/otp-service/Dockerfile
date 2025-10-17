@@ -46,7 +46,7 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # 5️⃣ Dùng image nhẹ hơn để chạy app (multi-stage build)
-FROM openjdk:21-jdk-slim
+FROM openjdk:21
 
 WORKDIR /app
 
