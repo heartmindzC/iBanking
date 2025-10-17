@@ -86,6 +86,7 @@
             android:textColor="#051178"
             android:textSize="24sp"
             android:textStyle="bold"
+            android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -223,5 +224,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvAmount"
             app:layout_constraintVertical_bias="0.9" />
+
+        <ProgressBar
+            android:id="@+id/progressLoading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/white"
+            app:layout_constraintTop_toTopOf="@+id/btPayment"
+            app:layout_constraintStart_toStartOf="@+id/btPayment"
+            app:layout_constraintEnd_toEndOf="@+id/btPayment"
+            app:layout_constraintBottom_toBottomOf="@+id/btPayment"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,13 +19,15 @@ import com.example.ibanking2.models.LoginManager;
 import com.example.ibanking2.models.User;
 import com.google.android.material.button.MaterialButton;
 
+import java.text.DecimalFormat;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView tvName, tvStudentId;
+    TextView tvName, tvStudentId, tvBalance;
     MaterialButton btPayTuition;
     MaterialButton mtTransactionHistory, btSignOut;
 
@@ -46,10 +48,14 @@ public class HomeActivity extends AppCompatActivity {
 
         tvName = findViewById(R.id.tvName);
         tvStudentId = findViewById(R.id.tvStudentId);
+        tvBalance = findViewById(R.id.tvBalance);
 
-        User user = LoginManager.getUser();
-        tvName.setText(user.getName());
-        tvStudentId.setText(user.getStudentId());
+        tvName.setText(LoginManager.getInstance().getUser().getName());
+        tvStudentId.setText(LoginManager.getInstance().getUser().getStudentId());
+
+        // xu li hien so du
+        DecimalFormat df = new DecimalFormat("#,###.###");
+        tvBalance.setText(df.format(LoginManager.getInstance().balance) + " VND");
 
         btPayTuition = findViewById(R.id.btPayTuition);
         btPayTuition.setOnClickListener(new View.OnClickListener() {

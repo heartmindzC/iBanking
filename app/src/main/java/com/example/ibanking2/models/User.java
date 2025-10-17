@@ -27,6 +27,9 @@ public class User {
     @SerializedName("classes")
     private String classes;
 
+    @SerializedName("email")
+    private String email;
+
     public User(int id, String studentId, String name, String password, Date birthDate, String gender, String classes) {
         this.id = id;
         this.studentId = studentId;
@@ -35,6 +38,17 @@ public class User {
         this.birthDate = birthDate;
         this.gender = gender;
         this.classes = classes;
+    }
+
+    public User(int id, String studentId, String name, String password, Date birthDate, String gender, String classes, String email) {
+        this.id = id;
+        this.studentId = studentId;
+        this.name = name;
+        this.password = password;
+        this.birthDate = birthDate;
+        this.gender = gender;
+        this.classes = classes;
+        this.email = email;
     }
 
     public int getId() {
@@ -91,5 +105,13 @@ public class User {
 
     public void setClasses(String classes) {
         this.classes = classes;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

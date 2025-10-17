@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +28,7 @@ import com.example.ibanking2.models.Tuition;
 import com.example.ibanking2.models.User;
 import com.google.android.material.appbar.MaterialToolbar;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,8 +41,9 @@ public class TransactionActivity extends AppCompatActivity {
     EditText etFindByStudentId;
     RecyclerView rvTuitions;
     User user;
-    TextView tvStudentIdName;
+    TextView tvStudentIdName, tvBalance;
     User userLogin = LoginManager.getInstance().getUser();
+    ProgressBar progressLoading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,11 @@ public class TransactionActivity extends AppCompatActivity {
 
         tvStudentIdName = findViewById(R.id.tvStudentIdName);
         tvStudentIdName.setText(userLogin.getStudentId() + " " + userLogin.getName());
+        tvBalance = findViewById(R.id.tvBalance);
+
+        // xu li hien so du theo format
+        DecimalFormat df = new DecimalFormat("#,###.###");
+        tvBalance.setText(df.format(LoginManager.getInstance().balance) + " VND");
 
         btGetTuition = findViewById(R.id.btGetTuition);
         btGetTuition.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +71,12 @@ public class TransactionActivity extends AppCompatActivity {
                 etFindByStudentId = findViewById(R.id.etFindByStudentId);
                 String studentId = etFindByStudentId.getText().toString();
 
+                // Hieu ung click button
+                progressLoading = findViewById(R.id.progressLoading);
+                progressLoading.setVisibility(View.VISIBLE);
+                btGetTuition.setText("");
+                btGetTuition.setEnabled(false);
+
                 // call api user to find user by student id
                 ApiService apiUser = ApiClient.getClient(ApiConfig.getUserServiceBaseURL()).create(ApiService.class);
                 Call<User> call = apiUser.getUserByStudentId(studentId);
@@ -70,10 +84,41 @@ public class TransactionActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         if (response.isSuccessful()) {
+                            Log.d("Call API User: ", "Success");
                             user = response.body();
+
+                            ApiService apiTuition = ApiClient.getClient(ApiConfig.getTuitionBaseURL()).create(ApiService.class);
+                            Call<List<Tuition>> callTuition = apiTuition.getTuitionByUserId(user.getId());
+                            callTuition.enqueue(new Callback<List<Tuition>>() {
+                                @Override
+                                public void onResponse(Call<List<Tuition>> call, Response<List<Tuition>> response) {
+                                    if (response.isSuccessful()) {
+                                        Log.d("Call API tuitions: ", "Success");
+                                        List<Tuition> tuitions = response.body();
+                                        TuitionAdapter adapter = new TuitionAdapter(tuitions, user, TransactionActivity.this);
+
+                                        rvTuitions = findViewById(R.id.rvTuitions);
+                                        rvTuitions.setLayoutManager(new LinearLayoutManager(TransactionActivity.this));
+                                        rvTuitions.addItemDecoration(new DividerItemDecoration(TransactionActivity.this, DividerItemDecoration.VERTICAL));
+                                        rvTuitions.setAdapter(adapter);
+                                    }
+                                    else {
+                                        Log.d("Call API tuitions: ", "Error");
+                                    }
+                                    showButtonGetTuition();
+                                }
+
+                                @Override
+                                public void onFailure(Call<List<Tuition>> call, Throwable t) {
+                                    Log.d("Call api tuition: ", "Error");
+                                    t.printStackTrace();
+                                    showButtonGetTuition();
+                                }
+                            });
                         }
                         else {
                             Log.d("Call API User: ", "Error");
+                            showButtonGetTuition();
                         }
                     }
 
@@ -81,37 +126,11 @@ public class TransactionActivity extends AppCompatActivity {
                     public void onFailure(Call<User> call, Throwable t) {
                         Log.d("Call api user", "Error");
                         t.printStackTrace();
+                        showButtonGetTuition();
                     }
                 });
 
-                if (user != null) {
-                    // Call api tuition
-                    ApiService apiTuition = ApiClient.getClient(ApiConfig.getTuitionBaseURL()).create(ApiService.class);
-                    Call<List<Tuition>> callTuition = apiTuition.getTuitionByUserId(user.getId());
-                    callTuition.enqueue(new Callback<List<Tuition>>() {
-                        @Override
-                        public void onResponse(Call<List<Tuition>> call, Response<List<Tuition>> response) {
-                            if (response.isSuccessful()) {
-                                List<Tuition> tuitions = response.body();
-                                TuitionAdapter adapter = new TuitionAdapter(tuitions, user);
 
-                                rvTuitions = findViewById(R.id.rvTuitions);
-                                rvTuitions.setLayoutManager(new LinearLayoutManager(TransactionActivity.this));
-                                rvTuitions.addItemDecoration(new DividerItemDecoration(TransactionActivity.this, DividerItemDecoration.VERTICAL));
-                                rvTuitions.setAdapter(adapter);
-                            }
-                            else {
-                                Log.d("Call API tuitions: ", "Error");
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<List<Tuition>> call, Throwable t) {
-                            Log.d("Call api tuition: ", "Error");
-                            t.printStackTrace();
-                        }
-                    });
-                }
             }
         });
 
@@ -131,5 +150,12 @@ public class TransactionActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // roll back hieu ung
+    private void showButtonGetTuition() {
+        btGetTuition.setText("Get Tuition");
+        progressLoading.setVisibility(View.GONE);
+        btGetTuition.setEnabled(true);
     }
 }

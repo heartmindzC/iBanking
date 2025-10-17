@@ -91,6 +91,19 @@
         app:strokeColor="#051178"
         app:strokeWidth="2dp" />
 
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="#051178"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btLogin"
+        app:layout_constraintEnd_toEndOf="@+id/btLogin"
+        app:layout_constraintStart_toStartOf="@+id/btLogin"
+        app:layout_constraintTop_toTopOf="@+id/btLogin" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"

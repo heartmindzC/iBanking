@@ -14,7 +14,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
     public User getUserById(Integer id){
+        System.out.println("id"+id);
         Optional<User> user = userRepository.findById(id);
+        System.out.println("idnee");
+        System.out.println(user);
+
+
         if(user.isPresent()) {
             return user.get();
         }
