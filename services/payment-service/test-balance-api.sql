@@ -21,3 +21,6 @@ INSERT INTO payment_accounts (user_id, balance) VALUES
 
 -- Kiểm tra dữ liệu đã được thêm
 SELECT * FROM payment_accounts ORDER BY user_id;
+
+
+
