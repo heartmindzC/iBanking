@@ -3,10 +3,12 @@ package com.example.paymentservice.service;
 
 import com.example.paymentservice.dto.PaymentRequest;
 import com.example.paymentservice.dto.PaymentResponse;
+import com.example.paymentservice.model.Account;
 import com.example.paymentservice.model.Payment;
 
 import com.example.paymentservice.model.PaymentStatus;
 import com.example.paymentservice.repository.PaymentRepository;
+import com.example.paymentservice.repository.AccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,9 @@ import java.util.Optional;
 public class PaymentService {
     @Autowired
     private PaymentRepository paymentRepo;
+    
+    @Autowired
+    private AccountRepository accountRepo;
     
     @Transactional
     public PaymentResponse createPayment(PaymentRequest request) {
@@ -52,8 +57,16 @@ public class PaymentService {
     public Optional<Payment> getPaymentById(int id) {
         return paymentRepo.findById(id);
     }
+    
+    public Optional<Payment> getPaymentByTuitionId(int tuitionId) {
+        return paymentRepo.findPaymentByTuitionId(tuitionId);
+    }
+    
+    public Optional<Payment> getPaymentByUserId(int userId) {
+        return paymentRepo.findPaymentByUserId(userId);
+    }
     public Double getBalanceByUserId(int userId) {
-        return paymentRepo.findBalanceByUserId(userId);
+        return accountRepo.findBalanceByUserId(userId);
     }
     public List<Payment> getAllPayments() {
         return paymentRepo.findAll();
@@ -65,6 +78,20 @@ public class PaymentService {
         payment.setStatus(status);
         payment.setUpdatedAt(LocalDateTime.now());
         return paymentRepo.save(payment);
+    }
+    @Transactional
+    public void updateBalanceByUserId(int userId, Double updBalance) {
+        // Kiểm tra Account có tồn tại không
+        Account account = accountRepo.findAccountByUserId(userId);
+        if (account == null) {
+            throw new RuntimeException("Account not found for user ID: " + userId);
+        }
+        
+        // Sử dụng @Modifying query để update trực tiếp database
+        int updatedRows = accountRepo.updateBalanceByUserId(userId, updBalance);
+        if (updatedRows == 0) {
+            throw new RuntimeException("Failed to update balance for user ID: " + userId);
+        }
     }
     @Transactional
     public void deletePayment(int id) {

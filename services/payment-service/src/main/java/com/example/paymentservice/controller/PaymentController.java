@@ -7,6 +7,7 @@ import com.example.paymentservice.model.Payment;
 import com.example.paymentservice.model.PaymentStatus;
 import com.example.paymentservice.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,20 +35,27 @@ public class PaymentController {
     }
     @GetMapping("/getPaymentByTuitionId/{tuitionId}")
     public ResponseEntity<Payment> getPaymentByTuitionId(@PathVariable int tuitionId) {
-        return paymentService.getPaymentById(tuitionId)
+        return paymentService.getPaymentByTuitionId(tuitionId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
     @GetMapping("/getPaymentByUserId/{userId}")
     public ResponseEntity<Payment> getPaymentByUserId(@PathVariable int userId) {
-        return paymentService.getPaymentById(userId)
+        return paymentService.getPaymentByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
-    @GetMapping("getBalanceByUserId/{userId}")
+    @GetMapping("/getBalanceByUserId/{userId}")
     public ResponseEntity<Double> getBalanceByUserId(@PathVariable int userId) {
-        Double balance = paymentService.getBalanceByUserId(userId);
-        return ResponseEntity.ok(balance);
+        try {
+            Double balance = paymentService.getBalanceByUserId(userId);
+            if (balance == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(balance);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
     // 📋 3️⃣ Lấy danh sách tất cả payment (cho admin hoặc kế toán)
     @GetMapping("/getAllPayments")
@@ -63,6 +71,26 @@ public class PaymentController {
 
         Payment updated = paymentService.updatePaymentStatus(id, status);
         return ResponseEntity.ok(updated);
+    }
+    @PutMapping("/updateBalance/{userId}/{updBalance}")
+    public ResponseEntity<String> updateBalance(@PathVariable int userId, @PathVariable Double updBalance) {
+        try {
+            // Validation
+            if (userId <= 0) {
+                return ResponseEntity.badRequest().body("Invalid user ID: " + userId);
+            }
+            if (updBalance == null || updBalance < 0) {
+                return ResponseEntity.badRequest().body("Invalid balance: " + updBalance + ". Balance must be non-negative.");
+            }
+            
+            paymentService.updateBalanceByUserId(userId, updBalance);
+            return ResponseEntity.ok("Balance updated successfully (User ID: " + userId + ", New Balance: " + updBalance + ")");
+
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error: " + e.getMessage());
+        }
     }
 
     // // 💰 6️⃣ Lấy số dư tài khoản theo User ID
