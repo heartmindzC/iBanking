@@ -39,7 +39,7 @@ public class TransactionActivity extends AppCompatActivity {
     EditText etFindByStudentId;
     RecyclerView rvTuitions;
     User user;
-    TextView tvStudentIdName;
+    TextView tvStudentIdName, tvBalance;
     User userLogin = LoginManager.getInstance().getUser();
 
     @Override
@@ -55,6 +55,8 @@ public class TransactionActivity extends AppCompatActivity {
 
         tvStudentIdName = findViewById(R.id.tvStudentIdName);
         tvStudentIdName.setText(userLogin.getStudentId() + " " + userLogin.getName());
+        tvBalance = findViewById(R.id.tvBalance);
+        tvBalance.setText(LoginManager.getInstance().balance + " VND");
 
         btGetTuition = findViewById(R.id.btGetTuition);
         btGetTuition.setOnClickListener(new View.OnClickListener() {

@@ -1,12 +1,16 @@
 package com.example.ibanking2.api;
 
 import com.example.ibanking2.models.LoginRequest;
+import com.example.ibanking2.models.Payment;
+import com.example.ibanking2.models.PaymentRequest;
 import com.example.ibanking2.models.Transaction;
+import com.example.ibanking2.models.TransactionRequest;
 import com.example.ibanking2.models.Tuition;
 import com.example.ibanking2.models.User;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -45,5 +49,23 @@ public interface ApiService {
     Call<Transaction> getTransactionById(@Path("id") int id);
 
     @POST("transactions/create?")
-    Call<Transaction> createTransaction(@Body Transaction transaction);
+    Call<Transaction> createTransaction(@Body TransactionRequest transaction);
+
+
+
+    // Call Api pyament-service
+    @GET("payments/getBalanceByUserId/{userId}")
+    Call<Double> getBalanceByUserId(@Path("userId") int id);
+
+    @POST("payments/createPayment?")
+    Call<Payment> createPayment(@Body PaymentRequest paymentRequest);
+
+
+
+    // Call api xu li otp
+    @POST("otp/generate?")
+    Call<Map<String, String>> genarateOTP(@Body Map<String, Object> request);
+
+    @POST("otp/verify?")
+    Call<Map<String, String>> verifyOTP(@Body Map<String, Object> request);
 }

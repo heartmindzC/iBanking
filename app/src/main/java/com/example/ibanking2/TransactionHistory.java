@@ -33,7 +33,7 @@ public class TransactionHistory extends AppCompatActivity {
 
     MaterialToolbar mtTransactionHistory;
     RecyclerView rvTransactions;
-    TextView tvStudentId, tvName;
+    TextView tvStudentId, tvName, tvBalance;
 
     private static final User userLogin = LoginManager.getInstance().getUser();
 
@@ -60,6 +60,8 @@ public class TransactionHistory extends AppCompatActivity {
         tvStudentId.setText(userLogin.getStudentId());
         tvName = findViewById(R.id.tvName);
         tvName.setText(userLogin.getName());
+        tvBalance = findViewById(R.id.tvBalance);
+        tvBalance.setText(LoginManager.getInstance().balance + " VND");
 
         rvTransactions = findViewById(R.id.rvTransactions);
 

@@ -41,7 +41,7 @@ public class OtpService {
         return code;
     }
     private void sendOtpEmail(String toEmail, String otpCode) {
-        String url = "http://localhost:8088/notifications/send-otp";
+        String url = "http://email-service:8088/notifications/send-otp";
 
         Map<String, String> body = Map.of(
                 "toEmail", toEmail,

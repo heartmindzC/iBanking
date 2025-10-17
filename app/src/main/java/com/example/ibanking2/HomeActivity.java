@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 public class HomeActivity extends AppCompatActivity {
 
-    TextView tvName, tvStudentId;
+    TextView tvName, tvStudentId, tvBalance;
     MaterialButton btPayTuition;
     MaterialButton mtTransactionHistory, btSignOut;
 
@@ -46,10 +46,12 @@ public class HomeActivity extends AppCompatActivity {
 
         tvName = findViewById(R.id.tvName);
         tvStudentId = findViewById(R.id.tvStudentId);
+        tvBalance = findViewById(R.id.tvBalance);
 
         User user = LoginManager.getUser();
         tvName.setText(user.getName());
         tvStudentId.setText(user.getStudentId());
+        tvBalance.setText(LoginManager.getInstance().balance + " VND");
 
         btPayTuition = findViewById(R.id.btPayTuition);
         btPayTuition.setOnClickListener(new View.OnClickListener() {

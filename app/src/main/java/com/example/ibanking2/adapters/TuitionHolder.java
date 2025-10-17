@@ -2,6 +2,7 @@ package com.example.ibanking2.adapters;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import com.example.ibanking2.R;
 public class TuitionHolder extends RecyclerView.ViewHolder {
     TextView tvStudentId, tvName, tvGender, tvClass, tvStatus, tvDateOfBirth, tvAmount;
     Button btPayment;
+    ProgressBar progressLoading;
     public TuitionHolder(@NonNull View itemView) {
         super(itemView);
         tvStudentId = itemView.findViewById(R.id.tvStudentId);
@@ -22,5 +24,6 @@ public class TuitionHolder extends RecyclerView.ViewHolder {
         tvDateOfBirth = itemView.findViewById(R.id.tvDateOfBirth);
         tvAmount = itemView.findViewById(R.id.tvAmount);
         btPayment = itemView.findViewById(R.id.btPayment);
+        progressLoading = itemView.findViewById(R.id.progressLoading);
     }
 }

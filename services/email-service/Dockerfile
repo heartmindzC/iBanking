@@ -1,6 +1,14 @@
 #FROM openjdk:21
 #WORKDIR /app
 #COPY target/*.jar app.jar
+#EXPOSE 8088
+#ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+#FROM openjdk:21
+#WORKDIR /app
+#COPY target/*.jar app.jar
 #EXPOSE 8080
 #ENTRYPOINT ["java","-jar","app.jar"]
 # 1️⃣ Dùng image Maven để build
@@ -20,6 +28,6 @@ WORKDIR /app
 # Copy file jar đã build từ stage trên
 COPY --from=builder /app/target/*.jar app.jar
 
-EXPOSE 8080
+EXPOSE 8088
 
 ENTRYPOINT ["java", "-jar", "app.jar"]

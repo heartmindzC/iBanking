@@ -1,5 +1,59 @@
-FROM openjdk:21
+#FROM openjdk:21
+#WORKDIR /app
+#COPY target/*.jar app.jar
+#EXPOSE 8084
+#ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+#FROM openjdk:21
+#WORKDIR /app
+#COPY target/*.jar app.jar
+#EXPOSE 8080
+#ENTRYPOINT ["java","-jar","app.jar"]
+# 1️⃣ Dùng image Maven để build
+#FROM maven:3.9.9-eclipse-temurin-21 AS builder
+#WORKDIR /app
+
+# Copy toàn bộ mã nguồn vào container
+#COPY . .
+
+# Build project và tạo file jar (bỏ qua test nếu muốn nhanh hơn)
+#RUN mvn clean package -DskipTests
+
+# 2️⃣ Dùng image nhỏ hơn chỉ để chạy
+#FROM openjdk:21-jdk-slim
+#WORKDIR /app
+#
+## Copy file jar đã build từ stage trên
+#COPY --from=builder /app/target/*.jar app.jar
+#
+#EXPOSE 8084
+#
+#ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+# 1️⃣ Dùng image có Maven để build
+FROM maven:3.9.9-eclipse-temurin-21 AS builder
+
+# 2️⃣ Đặt thư mục làm việc
 WORKDIR /app
-COPY target/*.jar app.jar
+
+# 3️⃣ Copy toàn bộ project vào container
+COPY . .
+
+# 4️⃣ Build project (bỏ test nếu không cần)
+RUN mvn clean package -DskipTests
+
+# 5️⃣ Dùng image nhẹ hơn để chạy app (multi-stage build)
+FROM openjdk:21-jdk-slim
+
+WORKDIR /app
+
+# 6️⃣ Copy file jar từ stage builder sang stage chạy
+COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8084
+
 ENTRYPOINT ["java", "-jar", "app.jar"]
+

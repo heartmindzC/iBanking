@@ -14,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PaymentRequest {
     private int userId;
-
     private int tuitionId;
     private String method;
     private double amount;
