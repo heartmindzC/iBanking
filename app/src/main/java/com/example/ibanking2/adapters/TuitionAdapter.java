@@ -80,7 +80,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
                 // call api thanh toan hoc phi
                 holder.btPayment.setEnabled(false);
                 holder.btPayment.setText("Đang xử lí...");
-                holder.progressLoading.setVisibility(View.VISIBLE);
+                holder.progressLoading.setVisibility(View.VISIBLE);   // hieu ung click nut
 
                 // Tao mot new transaction
                 TransactionRequest transactionRequest = createTransactionRequest(tuition.getId(), user.getStudentId(), tuition.getAmount());
@@ -273,6 +273,13 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionHolder> {
     }
 
     private void processTransaction() {
+        // xu lí tru tien
+
+        // xu lí status transaction
+
+        // xu lí status payment
+
+        // xu li gui mail noti success
 
     }
 }

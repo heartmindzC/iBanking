@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     Button btForgetPass;
     EditText etUserName;
     EditText etPassword;
+    ProgressBar progressLoading;
 
 
     @Override
@@ -52,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         btLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                btLogin.setText("");
+                btLogin.setEnabled(false);
+
+                // hieu ung click nut
+                progressLoading = findViewById(R.id.progressLoading);
+                progressLoading.setVisibility(View.VISIBLE);
+
                 String studentId = etUserName.getText().toString();
                 String password = etPassword.getText().toString();
 
@@ -77,17 +86,20 @@ public class MainActivity extends AppCompatActivity {
                             }
                             else {
                                 Log.d("Login", "User not exist");
+                                showButtonLogin();
                             }
                         }
                         else {
                             Toast.makeText(MainActivity.this, "Student id or password is wrong", Toast.LENGTH_SHORT).show();
                             Log.d("Login", "Not success");
+                            showButtonLogin();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<User> call, Throwable t) {
                         t.printStackTrace();
+                        showButtonLogin();
                     }
                 });
             }
@@ -101,6 +113,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // roll back hieu ung click nut
+    private void showButtonLogin() {
+        btLogin.setText("Login");
+        btLogin.setEnabled(true);
+        progressLoading.setVisibility(View.GONE);
     }
 
     /*
