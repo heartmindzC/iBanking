@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface TuitionRepository extends JpaRepository<Tuition,Integer> {
     Optional<Tuition> findTuitionById(int id);
     List<Tuition> findTuitionByUserId(int userId);
+
 }

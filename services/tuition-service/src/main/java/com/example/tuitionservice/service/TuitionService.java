@@ -29,4 +29,10 @@ public class TuitionService {
         }
         return tuitions;
     }
+
+    public void updateTuitionIsPaidById(int id, boolean paid) {
+        Tuition tuition = tuitionRepository.getReferenceById(id);
+        tuition.setPaid(paid);
+        tuitionRepository.save(tuition);
+    }
 }
