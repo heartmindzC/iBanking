@@ -35,4 +35,7 @@ public class User {
 
     @Column(nullable = false, unique = false) // đánh dấu ràng buộc không được null và có thể trùng lặp
     private String email;
+
+    @Column(nullable = false, unique = false)
+    private Boolean active = false;
 }
