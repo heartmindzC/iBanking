@@ -36,8 +36,17 @@ public class UserService {
             throw new RuntimeException("Student(ID:"+studentId+") not found");
         }
     }
+    public Boolean getUserActiveStatusByUserId(Integer id){
+        return userRepository.getUserActiveStatusByUserId(id);
+    }
     public String getEmailByUserId(Integer id){
         return userRepository.findById(id).get().getEmail();
+    }
+    public String updateActiveStatusByUserId(Integer id, Boolean active){
+        Optional<User> user = userRepository.findById(id);
+        user.get().setActive(active);
+        userRepository.save(user.get());
+        return "Update successful";
     }
     public User login(String studentId, String password) {
         Optional<User> user = userRepository.findByStudentId(studentId);
