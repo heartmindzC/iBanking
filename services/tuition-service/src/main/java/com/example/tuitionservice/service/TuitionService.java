@@ -30,9 +30,15 @@ public class TuitionService {
         return tuitions;
     }
 
-    public void updateTuitionIsPaidById(int id, boolean paid) {
-        Tuition tuition = tuitionRepository.getReferenceById(id);
-        tuition.setPaid(paid);
-        tuitionRepository.save(tuition);
+    public void updateTuitionStatusById(int id, String status) {
+        Optional<Tuition> tuition = tuitionRepository.findTuitionById(id);
+        if(tuition.isPresent()){
+            tuition.get().setStatus(status);
+            tuitionRepository.save(tuition.get());
+            System.out.println("Tuition updated successfully");
+        }
+        else {
+            throw new RuntimeException("Tuition(ID:"+id+") not found");
+        }
     }
 }
