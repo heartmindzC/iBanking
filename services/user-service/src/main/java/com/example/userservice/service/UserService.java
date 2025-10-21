@@ -32,7 +32,7 @@ public class UserService {
         }
     }
     public Boolean getUserActiveStatusByUserId(Integer id){
-        return userRepository.getUserActiveStatusByUserId(id);
+        return userRepository.getUserActiveStatusById(id);
     }
     public String getEmailByUserId(Integer id){
         return userRepository.findById(id).get().getEmail();
