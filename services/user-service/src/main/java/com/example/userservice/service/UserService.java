@@ -1,6 +1,5 @@
 package com.example.userservice.service;
 
-import com.example.userservice.dto.UserDTO;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +31,30 @@ public class UserService {
         }
     }
     public Boolean getUserActiveStatusByUserId(Integer id){
-        return userRepository.getUserActiveStatusById(id);
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            return user.get().getActive();
+        } else {
+            throw new RuntimeException("User(ID:"+id+") not found");
+        }
     }
     public String getEmailByUserId(Integer id){
-        return userRepository.findById(id).get().getEmail();
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()) {
+            return user.get().getEmail();
+        } else {
+            throw new RuntimeException("User(ID:"+id+") not found");
+        }
     }
     public String updateActiveStatusByUserId(Integer id, Boolean active){
         Optional<User> user = userRepository.findById(id);
-        user.get().setActive(active);
-        userRepository.save(user.get());
-        return "Update successful";
+        if(user.isPresent()) {
+            user.get().setActive(active);
+            userRepository.save(user.get());
+            return "Update successful";
+        } else {
+            throw new RuntimeException("User(ID:"+id+") not found");
+        }
     }
     public User login(String studentId, String password) {
         Optional<User> user = userRepository.findByStudentId(studentId);
