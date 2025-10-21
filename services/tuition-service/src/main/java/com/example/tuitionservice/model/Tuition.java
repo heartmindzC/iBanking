@@ -28,8 +28,7 @@ public class Tuition {
     @Column(nullable = false, unique = false)
     private Date date;
 
-    @Column(name ="is_paid",nullable = false, unique = false)
-    @JsonProperty("paid")
-    private boolean isPaid;
+    @Column(nullable = false, unique = false)
+    private String status;
 
 }

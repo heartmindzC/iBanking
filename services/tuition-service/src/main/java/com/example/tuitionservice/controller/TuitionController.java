@@ -23,9 +23,9 @@ public class TuitionController {
     public ResponseEntity<List<Tuition>> getTuitionByUserId(@PathVariable int userId){
         return ResponseEntity.ok(tuitionService.getTuitionByUserId(userId));
     }
-    @PutMapping("/updateTuitionIsPaidById/{id}/{paid}")
-    public ResponseEntity<String> updateTuitionIsPaidById(@PathVariable int id, @PathVariable boolean paid){
-        tuitionService.updateTuitionIsPaidById(id, paid);
-        return ResponseEntity.ok("Tuition["+id+"] updated successfully, current paid status is "+paid);
+    @PutMapping("/updateTuitionStatusById/{id}/{status}")
+    public ResponseEntity<String> updateTuitionStatusById(@PathVariable int id, @PathVariable String status){
+        tuitionService.updateTuitionStatusById(id, status);
+        return ResponseEntity.ok("Tuition["+id+"] updated successfully, current status is "+status);
     }
 }
