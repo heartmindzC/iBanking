@@ -11,6 +11,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     Optional<User> findById(Integer id); //Tìm user bằng id
     Optional<User> findByStudentId(String studentId);
     String findEmailById(int id);
-
-    Boolean getUserActiveStatusById(Integer id);
 }
