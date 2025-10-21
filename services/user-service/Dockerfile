@@ -3,6 +3,10 @@
 #COPY target/*.jar app.jar
 #EXPOSE 8080
 #ENTRYPOINT ["java","-jar","app.jar"]
+
+
+
+
 # 1️⃣ Dùng image Maven để build
 FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app

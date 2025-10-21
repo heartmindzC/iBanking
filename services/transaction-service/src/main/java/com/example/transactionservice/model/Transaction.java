@@ -19,9 +19,11 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(nullable = false,  unique = false)
+    // id nguoi thanh toan
     private int userId;
     @Column(nullable = false,  unique = false)
     private int tuitionId;
+    // ma sv nguoi duoc thanh toan
     @Column(nullable = false,  unique = false)
     private String studentId;
     @Column(nullable = false,  unique = false)

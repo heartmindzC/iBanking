@@ -26,8 +26,14 @@ public interface ApiService {
     @GET("users/userByStudentId/{studentId}")
     Call<User> getUserByStudentId(@Path("studentId") String studentId);
 
+    @GET("users/getActiveByUserId/{userId}")
+    Call<Boolean> getActiveByUserId(@Path("userId") int userId);
+
     @POST("users/login?")
     Call<User> login (@Body HashMap<String, String> request);
+
+    @PUT("users/updateActiveByUserId/{userId}/{active}")
+    Call<ResponseBody> updateActiveByUserId(@Path("userId") int userId, @Path("active") boolean active);
 
 
 
@@ -35,13 +41,21 @@ public interface ApiService {
     @GET("tuitions/getTuitionByUserId/{userId}")
     Call<List<Tuition>> getTuitionByUserId(@Path("userId") int userId);
 
-    @PUT("tuitions/updateTuitionIsPaidById/{id}/{paid}")
-    Call<ResponseBody> updateTuitionIsPaid(@Path("id") int id, @Path("paid") boolean paid);
+    @GET("tuitions/getTuitionById/{id}")
+    Call<Tuition> getTuitionById(@Path("id") int id);
+
+    @PUT("tuitions/updateTuitionStatusById/{id}/{status}")
+    Call<ResponseBody> updateTuitionIsPaid(@Path("id") int id, @Path("status") String status);
+
 
 
     // Call api for transaction
     @GET("transactions/getTransactionByUserId/{userId}")
     Call<List<Transaction>> getTransactionByUserId(@Path("userId") int userId);
+
+    // Call api get transaction by id
+    @GET("transactions/getTransactionById/{id}")
+    Call<Transaction> getTransactionById(@Path("id") int id);
 
     @POST("transactions/create?")
     Call<Transaction> createTransaction(@Body TransactionRequest transaction);
@@ -54,6 +68,9 @@ public interface ApiService {
     // Call Api pyament-service
     @GET("payments/getBalanceByUserId/{userId}")
     Call<Double> getBalanceByUserId(@Path("userId") int id);
+
+    @GET("payments/getPaymentById/{id}")
+    Call<Payment> getPaymentById(@Path("id") int id);
 
     @POST("payments/createPayment?")
     Call<Payment> createPayment(@Body PaymentRequest paymentRequest);

@@ -17,10 +17,11 @@ public class Tuition {
     @SerializedName("date")
     private Date date;
 
-    @SerializedName("paid")
-    private boolean paid;
+    // DA_THANH_TOAN, CHO_THANH_TOAN, CHUA_THANH_TOAN
+    @SerializedName("status")
+    private String paid;
 
-    public Tuition(int id, String userID, double amount, Date date, boolean paid) {
+    public Tuition(int id, String userID, double amount, Date date, String paid) {
         this.id = id;
         this.userID = userID;
         this.amount = amount;
@@ -40,7 +41,11 @@ public class Tuition {
         return amount;
     }
 
-    public boolean isPaid() {
+    public String isPaid() {
         return paid;
+    }
+
+    public Date getDate() {
+        return date;
     }
 }

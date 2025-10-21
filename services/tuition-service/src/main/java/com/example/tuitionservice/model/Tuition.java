@@ -28,6 +28,7 @@ public class Tuition {
     @Column(nullable = false, unique = false)
     private Date date;
 
+    // pay, paying, paid
     @Column(nullable = false, unique = false)
     private String status;
 

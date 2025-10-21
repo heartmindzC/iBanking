@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
 
     TextView tvName, tvStudentId, tvBalance;
     MaterialButton btPayTuition;
-    MaterialButton mtTransactionHistory, btSignOut;
+    MaterialButton mtTransactionHistory, btSignOut, btStudentInfomation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +71,15 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(HomeActivity.this, TransactionHistory.class);
+                startActivity(intent);
+            }
+        });
+
+        btStudentInfomation = findViewById(R.id.btStudentInfomation);
+        btStudentInfomation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(HomeActivity.this, UserInfomation.class);
                 startActivity(intent);
             }
         });
