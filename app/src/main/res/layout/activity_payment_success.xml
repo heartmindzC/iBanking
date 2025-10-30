@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
-        app:title="Payment success"
+        app:title="Thanh toán thành công"
         app:titleTextColor="@color/white" />
 
     <pl.droidsonroids.gif.GifImageView
@@ -26,7 +26,7 @@
         android:layout_height="144dp"
         android:layout_marginTop="205dp"
         android:background="@android:color/transparent"
-        android:src="@drawable/icons8_success"
+        android:src="@drawable/icon_success"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -38,7 +38,7 @@
         android:id="@+id/textView3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Payment success, back to home after 3 senconds"
+        android:text="Thanh toán thành công \n chuyển về màn trang chủ sau 3s "
         android:textAlignment="center"
         android:textColor="#051178"
         android:textSize="18sp"

@@ -268,9 +268,9 @@ services:
       MYSQL_PASSWORD: secret
     ports:
       - "3306:3306"
-    volumes:
-      - mysqldata:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+#    volumes:
+#      - mysqldata:/var/lib/mysql
+#      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
     healthcheck:
       test: [ "CMD-SHELL", "mysqladmin ping -h localhost -prootpass | grep 'mysqld is alive' || exit 1" ]
       interval: 10s
@@ -403,10 +403,18 @@ services:
     container_name: otp-service
     restart: on-failure
     depends_on:
+      mysql:
+        condition: service_healthy
       consul:
         condition: service_healthy
     environment:
       SPRING_APPLICATION_NAME: otp-service
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/ibanking?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: ib_user
+      SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "true"
+      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.MySQL8Dialect
       SPRING_CLOUD_CONSUL_HOST: consul
       SPRING_CLOUD_CONSUL_PORT: 8500
       SPRING_CLOUD_CONSUL_DISCOVERY_REGISTER: "true"
@@ -415,6 +423,22 @@ services:
       SERVER_SERVLET_CONTEXT_PATH: /iBanking
     ports:
       - "8084:8084"
+    networks:
+      - ibanking-net
+
+  email-service:
+    build: ./services/email-service
+    container_name: email-service
+    restart: on-failure
+    depends_on:
+      consul:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: email-service
+      SERVER_PORT: 8088
+#      SERVER_SERVLET_CONTEXT_PATH: /iBanking
+    ports:
+      - "8088:8088"
     networks:
       - ibanking-net
 

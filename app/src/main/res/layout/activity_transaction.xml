@@ -17,7 +17,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
-        app:title="Tuition Payment"
+        app:title="Thanh toán học phí"
         app:titleTextColor="@color/white" />
 
     <EditText
@@ -27,10 +27,10 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="12345678"
+        android:hint="SV00..."
         android:inputType="text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
@@ -41,7 +41,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Student ID"
+        android:text="Mã sinh viên"
         android:textColor="#051178"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -89,8 +89,8 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.182"
-            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView21"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.122" />
 
@@ -110,7 +110,7 @@
             android:id="@+id/textView21"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Balance: "
+            android:text="Số dư: "
             android:textColor="#051178"
             android:textSize="18sp"
             android:textStyle="bold"
@@ -143,8 +143,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Get Tuition"
         android:backgroundTint="#051178"
+        android:text="Xem học phí"
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -153,10 +153,24 @@
         app:layout_constraintTop_toBottomOf="@+id/etFindByStudentId"
         app:layout_constraintVertical_bias="0.0" />
 
+    <ProgressBar
+        android:id="@+id/progressLoading"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/btGetTuition"
+        app:layout_constraintEnd_toEndOf="@+id/btGetTuition"
+        app:layout_constraintHorizontal_bias="0.50"
+        app:layout_constraintStart_toStartOf="@+id/btGetTuition"
+        app:layout_constraintTop_toTopOf="@+id/btGetTuition" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvTuitions"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginStart="10dp"

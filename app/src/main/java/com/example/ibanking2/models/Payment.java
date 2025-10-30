@@ -3,7 +3,7 @@ package com.example.ibanking2.models;
 import com.google.gson.annotations.SerializedName;
 
 public class Payment {
-    @SerializedName("id")
+    @SerializedName("paymentId")
     private int id;
     @SerializedName("userId")
     private int userId;

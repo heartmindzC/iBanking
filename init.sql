@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS ibanking-user;
-USE ibanking-user;
+CREATE DATABASE IF NOT EXISTS `ibanking-user`;
+USE `ibanking-user`;
 CREATE TABLE users(
   id INT AUTO_INCREMENT PRIMARY KEY,
   name NVARCHAR(100) NOT NULL,
@@ -7,39 +7,38 @@ CREATE TABLE users(
   birth_date DATE,
   gender VARCHAR(5),
   student_id VARCHAR(10) NOT NULL UNIQUE,
-  classes VARCHAR(10) NOT NULL
+  classes VARCHAR(10) NOT NULL,
+  email VARCHAR(100) NOT NULL
 );
 
-USE ibanking-user
-INSERT INTO users (name, password, birth_date, gender, student_id, classes) VALUES
-('Nguyen Van A', '123456', '2001-03-15', 'M', 'SV001', 'T01'),
-('Tran Thi B', 'abcxyz', '2002-07-22', 'F', 'SV002', 'T01'),
-('Le Van C', 'mypassword', '2000-12-01', 'M', 'SV003', 'T01'),
-('Pham Thi D', 'qwerty', '2003-05-09', 'F', 'SV004', 'T01'),
-('Hoang Van E', 'pass123', '2001-11-30', 'M', 'SV005', 'T01');
+USE `ibanking-user`
+INSERT INTO users (name, password, birth_date, gender, student_id, classes, email, active) VALUES
+('Nguyen Thanh Tu', '123456', '2001-03-15', 'M', 'SV001', 'T01', 'ntu318485@gmail.com', FALSE),
+('Tran Cao Phong', 'abcxyz', '2002-07-22', 'F', 'SV002', 'T01', 'caophongt60@gmail.com', FALSE),
+('Dinh Quoc cuong', 'mypassword', '2000-12-01', 'M', 'SV003', 'T01', 'tu03673@gmail.com', FALSE),
+('Phan Tuan Vy', 'qwerty', '2003-05-09', 'F', 'SV004', 'T01', 'phantuanvy.tv2019@gmail.com', FALSE),
+('Hoang Van E', 'pass123', '2001-11-30', 'M', 'SV005', 'T01', 'tu21122005@gmail.com', FALSE);
 
-
-CREATE DATABASE IF NOT EXISTS ibanking-tuition;
-USE ibanking-tuition;
+CREATE DATABASE IF NOT EXISTS `ibanking-tuition`;
+USE `ibanking-tuition`;
 CREATE TABLE tuitions(
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
   amount DOUBLE NOT NULL,
   date DATETIME,
-  isPaid BOOLEAN DEFAULT FALSE
+  is_paid BOOLEAN DEFAULT FALSE
 );
 
-USE ibanking-tuition;
-INSERT INTO tuitions (user_id, amount, date, is_paid) VALUES
-(1, 1500.00, '2025-10-01 10:00:00', FALSE),
-(2, 1600.50, '2025-10-02 11:30:00', TRUE),
-(3, 1550.75, '2025-10-03 09:45:00', FALSE),
-(4, 1700.00, '2025-10-04 14:20:00', TRUE),
-(5, 1650.25, '2025-10-05 16:10:00', FALSE),
-(1, 1680.25, '2025-10-05 16:10:00', FALSE);
+USE `ibanking-tuition`;
+INSERT INTO tuitions (user_id, amount, date, status) VALUES
+(1, 1500.00, '2025-10-01 10:00:00', "NOT_PAT"),
+(2, 1600.50, '2025-10-02 11:30:00', "NOT_PAY"),
+(3, 1550.75, '2025-10-03 09:45:00', "NOT_PAY"),
+(4, 1700.00, '2025-10-04 14:20:00', "NOT_PAY"),
+(5, 1650.25, '2025-10-05 16:10:00', "NOT_PAY");
 
-CREATE DATABASE IF NOT EXISTS ibanking-transaction;
-USE ibanking-transaction;
+CREATE DATABASE IF NOT EXISTS `ibanking-transaction`;
+USE `ibanking-transaction`;
 CREATE TABLE transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -65,8 +64,8 @@ INSERT INTO transactions (user_id, tuition_id, student_id, date, amount, type, s
 (5, 109, 'SV005', '2025-10-05', 1650.25, 'PAYMENT', 'PENDING', '2025-10-05 16:10:00', '2025-10-05 16:10:00'),
 (5, 110, 'SV005', '2025-10-07', 1650.25, 'REFUND', 'SUCCESS', '2025-10-07 09:25:00', '2025-10-07 09:25:00');
 
-CREATE DATABASE IF NOT EXISTS ibanking-payment;
-USE ibanking-payment;
+CREATE DATABASE IF NOT EXISTS `ibanking-payment`;
+USE `ibanking-payment`;
 CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -79,8 +78,8 @@ CREATE TABLE payments (
     updated_at DATETIME NOT NULL
 );
 
-CREATE DATABASE IF NOT EXISTS ibanking-payment;
-USE ibanking-payment;
+CREATE DATABASE IF NOT EXISTS `ibanking-payment`;
+USE `ibanking-payment`;
 CREATE TABLE IF NOT EXISTS payment_accounts (
     account_id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL UNIQUE,
@@ -99,10 +98,9 @@ INSERT INTO payments (user_id, tuition_id, amount, method, status, transaction_i
 (5, 109, 1650.25, 'BANK_TRANSFER', 'PENDING', 9, '2025-10-05 16:10:00', '2025-10-05 16:10:00'),
 (5, 110, 1650.25, 'CASH', 'SUCCESS', 10, '2025-10-07 09:25:00', '2025-10-07 09:25:00');
 
-INSERT INTO payment_accounts (user_id, balance) VALUES
-(1, 2500.00),
-(2, 3200.50),
-(3, 1500.75),
-(4, 4200.00),
-(5, 2850.25);
-
+insert into accounts(user_id, balance) values
+(1, 15000000),
+(2, 20000000),
+(3, 19000000),
+(4, 22000000),
+(5, 30000000);

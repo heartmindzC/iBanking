@@ -1,11 +1,16 @@
 #FROM openjdk:21
 #WORKDIR /app
 #COPY target/*.jar app.jar
-#EXPOSE 8081
+#EXPOSE 8088
+#ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+
+#FROM openjdk:21
+#WORKDIR /app
+#COPY target/*.jar app.jar
+#EXPOSE 8080
 #ENTRYPOINT ["java","-jar","app.jar"]
-
-
-
 # 1️⃣ Dùng image Maven để build
 FROM maven:3.9.9-eclipse-temurin-21 AS builder
 WORKDIR /app
@@ -17,12 +22,12 @@ COPY . .
 RUN mvn clean package -DskipTests
 
 # 2️⃣ Dùng image nhỏ hơn chỉ để chạy
-FROM openjdk:21
+FROM openjdk:21-jdk-slim
 WORKDIR /app
 
 # Copy file jar đã build từ stage trên
 COPY --from=builder /app/target/*.jar app.jar
 
-EXPOSE 8081
+EXPOSE 8088
 
 ENTRYPOINT ["java", "-jar", "app.jar"]
